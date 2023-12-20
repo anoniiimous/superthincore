@@ -24,9 +24,8 @@
     window.WSS = {};
 
     window.WSS.con = {};
-    window.WSS.con.open = ()=>{
-        if (window.Proxy === undefined)
-            return;
+    window.WSS.con.open = () => {
+        if (window.Proxy === undefined) return;
         var handler = {
             set: function(Target, prop, value) {
                 if (prop == "onmessage") {
@@ -34,8 +33,7 @@
                     value = function(event) {
                         WSS.msg.recv(JSON.parse(event.data), Target);
                         oldMessage(event);
-                    }
-                    ;
+                    };
                 }
                 return (Target[prop] = value);
             },
@@ -45,40 +43,44 @@
                     value = function(event) {
                         WSS.msg[prop](JSON.parse(event), Target);
                         Target.send(event);
-                    }
-                    ;
+                    };
                 } else if (typeof value == 'function') {
                     value = value.bind(Target);
                 }
                 return value;
             }
         };
-        var WebSocketProxy = new window.Proxy(window.WebSocket,{
+        var WebSocketProxy = new window.Proxy(window.WebSocket, {
             construct: function(Target, args) {
                 APP.SocketTarget = new Target(args[0]);
                 console.log("SOCKET::CONNECTING", args[0]);
-                return new window.Proxy(APP.SocketTarget,handler);
+                return new window.Proxy(APP.SocketTarget, handler);
             }
         });
         window.WebSocket = WebSocketProxy;
     }
 
     window.WSS.msg = {};
-    window.WSS.msg.recv = function({tc}) {
+    window.WSS.msg.recv = function({
+        tc
+    }) {
         if (typeof API.server.recv[arguments[0].tc] == "function") {
             console.log(("SERVER::" + arguments[0].tc.toUpperCase()), arguments[0]);
             API.server.recv[arguments[0].tc](arguments[0]);
         }
     }
-    window.WSS.msg.send = function({tc}) {
+    window.WSS.msg.send = function({
+        tc
+    }) {
         if (typeof API.server.send[arguments[0].tc] == "function") {
             console.log(("CLIENT::" + arguments[0].tc.toUpperCase()), arguments[0]);
             API.server.send[arguments[0].tc](arguments[0]);
         }
     }
-    window.WSS.msg.req = ({tc})=>{
-        if (arguments[1] === undefined)
-            arguments[1] = "Open Request";
+    window.WSS.msg.req = ({
+        tc
+    }) => {
+        if (arguments[1] === undefined) arguments[1] = "Open Request";
         console.log(("CLIENT::SEND::" + arguments[0].toUpperCase()), arguments[1]);
     }
 
@@ -86,7 +88,9 @@
     window.APP = {}
 
     window.APP.config = {}
-    window.window.APP.config.Message = [[]]
+    window.window.APP.config.Message = [
+        []
+    ]
     window.APP.config.version = {
         Major: 0,
         Minor: 0,
@@ -94,7 +98,7 @@
     }
 
     window.APP.view = {}
-    window.APP.view.room = (params)=>{
+    window.APP.view.room = (params) => {
         console.log("TinyScript::APP.VIEW.ROOM", params);
         clearInterval(APP.ScriptLoading);
         APP.ScriptInit = true;
@@ -128,19 +132,24 @@
 
         //INSERT
         document.body.querySelector("style").insertAdjacentHTML("beforeend", APP.css.main);
-        //obj.textarea ? obj.textarea.querySelector("style").innerHTML = APP.css.textarea.stylesheet : obj.textarea.insertAdjacentHTML("afterend", "<style>" + APP.css.textarea.stylesheet + "</style>");
         Object.keys(obj).forEach(async function(name) {
-            var fullname = "thebanon/userscript";
+            var fullname = "thebanon/tinyscript";
+            var theme = "modern";
             var user = fullname.split("/")[0];
             var repo = fullname.split("/")[1];
+            var paths = fullname.split("/").splice(2,fullname.split("/").length - 1);
+            var dir = paths.length > 0 ? paths.join("/") : "";
             var host = "https://" + user + ".github.io";
-            var path = "/" + repo + "/css";
+            var path = "/" + repo + "/files/theme/" + theme;
             var file = "/" + name + ".css";
-            var get = await request(host + path + file);
-            console.log(142, 'GET STYLESHEETS', {
-                get
-            });
-            window.APP.css[name].stylesheet = res;
+            try {
+                var res = await request(host + path + file, {
+                    cache: "reload"
+                });
+                res.length > 0 ? window.APP.css[name].element.querySelector("style").innerHTML = window.APP.css[name].stylesheet = res : null;
+            } catch(e) {
+                console.log(151, { e });
+            }
         });
     }
 
@@ -148,7 +157,7 @@
     window.BOT = {};
 
     window.BOT.cmd = {}
-    window.BOT.cmd.ver = ()=>{
+    window.BOT.cmd.ver = () => {
         console.log("BOT.cmd.ver", window.Version);
     }
 
@@ -170,8 +179,7 @@
     window.API.queue.add = function() {
         APP.SendQueue.push(arguments[0]);
         API.queue.run();
-    }
-    ;
+    };
     window.API.queue.run = function() {
         if (APP.SendQueue !== undefined && APP.SendQueue.length > 0) {
             setTimeout(function() {
@@ -185,8 +193,7 @@
                 API.queue.run();
             }, 1600);
         }
-    }
-    ;
+    };
 
     window.API.server = {};
     window.API.server.recv = {
@@ -258,6 +265,7 @@
 
     //INIT
     Init();
+
     function Init() {
         console.log(280, "window.init");
         var err_out = 0;
@@ -282,8 +290,7 @@
             new MutationObserver(function() {
                 this.disconnect();
                 WSS.con.open();
-            }
-            ).observe(document, {
+            }).observe(document, {
                 subtree: true,
                 childList: true
             });
@@ -298,23 +305,21 @@
 
     //FETCH
     window.Fetch = window.fetch;
-    async function request() {
+    async function request(resource, options) {
         return new Promise(async function(resolve, reject) {
-            await Fetch(url, options).then(async(response)=>{
+            await Fetch(resource, options).then(async (response) => {
                 //console.log(response);
                 if (!response.ok) {
-                    return response.text().then(text=>{
+                    return response.text().then(text => {
                         var text = JSON.stringify({
                             code: response.status,
                             message: JSON.parse(text)
                         });
                         throw new Error(text);
-                    }
-                    )
+                    })
                 }
                 return response.text();
-            }
-            ).then(response=>{
+            }).then(response => {
                 try {
                     //console.log(39, response);
                     response = JSON.parse(response);
@@ -326,14 +331,10 @@
                 } catch (err) {
                     resolve(response);
                 }
-            }
-            ).catch(error=>{
+            }).catch(error => {
                 console.log("function_get 404 ERROR", error);
                 reject(error);
-            }
-            )
-        }
-        );
+            })
+        });
     }
-}
-)();
+})();
