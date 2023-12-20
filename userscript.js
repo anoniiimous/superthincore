@@ -53,7 +53,7 @@
         var WebSocketProxy = new window.Proxy(window.WebSocket, {
             construct: function(Target, args) {
                 APP.SocketTarget = new Target(args[0]);
-               console.log("SOCKET::CONNECTING", args[0]);
+                console.log("SOCKET::CONNECTING", args[0]);
                 return new window.Proxy(APP.SocketTarget, handler);
             }
         });
@@ -61,21 +61,27 @@
     }
 
     window.WSS.msg = {};
-    window.WSS.msg.recv = function({tc}) {
+    window.WSS.msg.recv = function({
+        tc
+    }) {
         if (typeof API.server.recv[arguments[0].tc] == "function") {
-           console.log(("SERVER::" + arguments[0].tc.toUpperCase()), arguments[0]);
+            console.log(("SERVER::" + arguments[0].tc.toUpperCase()), arguments[0]);
             API.server.recv[arguments[0].tc](arguments[0]);
         }
     }
-    window.WSS.msg.send = function({tc}) {
+    window.WSS.msg.send = function({
+        tc
+    }) {
         if (typeof API.server.send[arguments[0].tc] == "function") {
-           console.log(("CLIENT::" + arguments[0].tc.toUpperCase()), arguments[0]);
+            console.log(("CLIENT::" + arguments[0].tc.toUpperCase()), arguments[0]);
             API.server.send[arguments[0].tc](arguments[0]);
         }
     }
-    window.WSS.msg.req = ({tc}) => {
+    window.WSS.msg.req = ({
+        tc
+    }) => {
         if (arguments[1] === undefined) arguments[1] = "Open Request";
-       console.log(("CLIENT::SEND::" + arguments[0].toUpperCase()), arguments[1]);
+        console.log(("CLIENT::SEND::" + arguments[0].toUpperCase()), arguments[1]);
     }
 
     //APP
@@ -96,6 +102,50 @@
         console.log("TinyScript::APP.VIEW.ROOM", params);
         clearInterval(APP.ScriptLoading);
         APP.ScriptInit = true;
+        console.log("TinyScript::APP.VIEW.ROOM", params);
+
+        //ELEMENTS
+        var obj = {}
+        obj.main = document.querySelector("tinychat-webrtc-app").shadowRoot;
+        obj.chatlog = obj.main.querySelector("tc-chatlog").shadowRoot;
+        obj.textarea = obj.chatlog.querySelector("#textarea");
+        obj.videolist = obj.main.querySelector("tc-videolist").shadowRoot;
+        obj.sidemenu = obj.main.querySelector("tc-sidemenu").shadowRoot;
+        obj.title = obj.main.querySelector("tc-title").shadowRoot;
+        obj.userlist = obj.sidemenu.querySelector("tc-userlist").shadowRoot;
+        obj.moderationlist = obj.sidemenu.querySelector("tc-video-moderation").shadowRoot;
+        obj.chatlist = obj.sidemenu.querySelector("tc-chatlist").shadowRoot;
+        obj.usercontext = obj.userlist.querySelector("tc-user-contextmenu").shadowRoot;
+        console.log("TinyScript::APP.VIEW.ROOM", params);
+
+        //STYLES
+        window.APP.css = {};
+        Object.keys(obj).forEach(function(name) {
+            window.APP.css[name] = {
+                element: obj[name],
+                stylesheet: null
+            }
+        });
+        console.log(125, "TinyScript::APP.VIEW.ROOM", {
+            app: window.app
+        });
+
+        //INSERT
+        document.body.querySelector("style").insertAdjacentHTML("beforeend", APP.css.main);
+        //obj.textarea ? obj.textarea.querySelector("style").innerHTML = APP.css.textarea.stylesheet : obj.textarea.insertAdjacentHTML("afterend", "<style>" + APP.css.textarea.stylesheet + "</style>");
+        Object.keys(obj).forEach(async function(name) {
+            var fullname = "thebanon/userscript";
+            var user = fullname.split("/")[0];
+            var repo = fullname.split("/")[1];
+            var host = "https://" + user + ".github.io";
+            var path = "/" + repo + "/css";
+            var file = "/" + name + ".css";
+            var get = await request(host + path + file);
+            console.log(142, 'GET STYLESHEETS', {
+                get
+            });
+            window.APP.css[name].stylesheet = res;
+        });
     }
 
     //BOT
@@ -103,7 +153,7 @@
 
     window.BOT.cmd = {}
     window.BOT.cmd.ver = () => {
-       console.log("BOT.cmd.ver", window.Version);
+        console.log("BOT.cmd.ver", window.Version);
     }
 
     window.BOT.sys = {}
@@ -111,8 +161,8 @@
         var UserCommand = arguments[0].match(/^!([a-z0-9]*)(?: ?)(.*)/i);
         if (UserCommand) {
             if (typeof BOT.cmd[UserCommand[1].toLowerCase()] == "function") {
-               console.log("COMMAND::" + ((arguments[1]) ? "PM" : "MAIN"), UserCommand[1] + ":" + UserCommand[2]);
-               BOT.cmd[UserCommand[1].toLowerCase()](UserCommand[2], arguments[1]);
+                console.log("COMMAND::" + ((arguments[1]) ? "PM" : "MAIN"), UserCommand[1] + ":" + UserCommand[2]);
+                BOT.cmd[UserCommand[1].toLowerCase()](UserCommand[2], arguments[1]);
             }
         }
     }
@@ -146,49 +196,50 @@
             APP.SocketConnected = true;
         },
         Users: function() {
-           console.log(arguments[0]);
+            console.log(arguments[0]);
         },
         join: function() {
-           console.log(arguments[0]);
-3        },
+            console.log(arguments[0]);
+            3
+        },
         sysmsg: function() {
-           console.log(arguments[0]);
+            console.log(arguments[0]);
         },
         nick: function() {
-           console.log(arguments[0]);
+            console.log(arguments[0]);
         },
         stream_connected: function() {
-           console.log(arguments[0]);
+            console.log(arguments[0]);
         },
         stream_closed: function() {
-           console.log(arguments[0]);
+            console.log(arguments[0]);
         },
         publish: function() {
-           console.log(arguments[0]);
+            console.log(arguments[0]);
         },
         unpublish: function() {
-           console.log(arguments[0]);
+            console.log(arguments[0]);
         },
         ping: function() {
             window.TinychatApp.getInstance().defaultChatroom._chatlog.items = [];
             window.TinychatApp.getInstance().defaultChatroom.packetWorker.queue = {};
         },
         quit: function() {
-           console.log(arguments[0]);
+            console.log(arguments[0]);
         },
         msg: function() {
-           console.log(arguments[0]);
+            console.log(arguments[0]);
         },
         pvtmsg: function() {
-           console.log(arguments[0]);
+            console.log(arguments[0]);
         },
         gift: function() {
-           console.log(arguments[0]);
+            console.log(arguments[0]);
         },
     };
     window.API.server.send = {
         pvtmsg: function() {
-           console.log(arguments[0]);
+            console.log(arguments[0]);
         },
         msg: function() {
             if (APP.ScriptInit) {
@@ -197,13 +248,13 @@
             }
         },
         ban: function() {
-           console.log(arguments[0]);
+            console.log(arguments[0]);
         },
         kick: function() {
-           console.log(arguments[0]);
+            console.log(arguments[0]);
         },
         stream_moder_close: function() {
-           console.log(arguments[0]);
+            console.log(arguments[0]);
         }
     };
 
@@ -219,8 +270,7 @@
                 if (twa.shadowRoot) {
                     APP.view.room()
                 }
-            }
-            else {
+            } else {
                 err_out++;
             }
             if (err_out == 50) {
@@ -230,7 +280,7 @@
         }, 200);
 
         if (!document.URL.match(/^https:\/\/tinychat\.com\/(?:$|#)/i)) {
-           console.log("WSS.hook", document.URL);
+            console.log("WSS.hook", document.URL);
             new MutationObserver(function() {
                 this.disconnect();
                 WSS.con.open();
@@ -245,5 +295,41 @@
                 clearInterval(APP.FullLoad);
             }
         }, 500);
+    }
+
+    //FETCH
+    window.Fetch = window.fetch;
+    async function request() {
+        return new Promise(async function(resolve, reject) {
+            await Fetch(url, options).then(async(response)=>{
+                //console.log(response);
+                if (!response.ok) {
+                    return response.text().then(text=>{
+                        var text = JSON.stringify({
+                            code: response.status,
+                            message: JSON.parse(text)
+                        });
+                        throw new Error(text);
+                    }
+                                               )
+                }
+                return response.text();
+            }
+                                          ).then(response=>{
+                try {
+                    //console.log(39, response);
+                    response = JSON.parse(response);
+                    console.log(41, 'fetch.request', {response, url});
+                    resolve(response);
+                } catch (err) {
+                    resolve(response);
+                }
+            }
+                                                ).catch(error=>{
+                console.log("function_get 404 ERROR", error);
+                reject(error);
+            }
+                                                       )
+        });
     }
 })();
