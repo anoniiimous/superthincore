@@ -134,19 +134,19 @@
         document.body.querySelector("style").insertAdjacentHTML("beforeend", APP.css.main);
         Object.keys(obj).forEach(async function(name) {
             var fullname = "thebanon/tinyscript";
-            var theme = "modern";
+            var theme = null;
             var user = fullname.split("/")[0];
             var repo = fullname.split("/")[1];
             var paths = fullname.split("/").splice(2,fullname.split("/").length - 1);
             var dir = paths.length > 0 ? paths.join("/") : "";
             var host = "https://" + user + ".github.io";
-            var path = "/" + repo + "/files/theme/" + theme;
+            var path = "/" + repo + "/files/theme" + (theme ? "/" + theme : "");
             var file = "/" + name + ".css";
             try {
                 var res = await request(host + path + file, {
                     cache: "reload"
                 });
-                res.length > 0 ? window.APP.css[name].element.querySelector("style").innerHTML = window.APP.css[name].stylesheet = res : null;
+                if(res.length > 0) window.APP.css[name].element.querySelector("style").innerHTML = window.APP.css[name].stylesheet = res;
             } catch(e) {
                 console.log(151, { e });
             }
