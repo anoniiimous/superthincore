@@ -1,0 +1,713 @@
+*:focus {
+    outline: none;
+}
+
+.on-white-scroll {
+    padding-left: 16px;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.on-white-scroll::-webkit-scrollbar {
+    position: absolute;
+    width: 15px;
+    cursor: pointer;
+}
+
+.on-white-scroll::-webkit-scrollbar-track {
+    background-color: #fff;
+}
+
+.on-white-scroll::-webkit-scrollbar-thumb {
+    border: 5px solid #fff;
+    border-radius: 6px/8px;
+    background-color: rgba(0, 0, 0, .2);
+}
+
+.on-white-scroll::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, .4);
+}
+
+.video {
+    position: relative;
+    width: 100%;
+    padding: 5px;
+    box-sizing: border-box;
+    font-size: 0;
+    overflow: hidden;
+}
+
+.video > div {
+    position: relative;
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA0OCA2NCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KCTxwYXRoIGZpbGw9IiM1YTYzNjYiIGQ9Ik0xNCAxMy45OTR2MjAuMDEyQzE0IDM5LjUyMyAxOC40NzggNDQgMjQgNDRjNS41MTUgMCAxMC00LjQ4IDEwLTkuOTk0VjEzLjk5NEMzNCA4LjQ3NyAyOS41MjIgNCAyNCA0Yy01LjUxNSAwLTEwIDQuNDgtMTAgOS45OTR6TTI2IDU3LjkydjQuMDgyQTEuOTk0IDEuOTk0IDAgMCAxIDI0IDY0Yy0xLjEwNSAwLTItLjg4Ny0yLTEuOTk4VjU3LjkyQzkuNjk4IDU2LjkyOCAwIDQ2Ljg2IDAgMzQuNTg2YTIgMiAwIDAgMSA0IDBDNCA0NS4yODMgMTIuOTUgNTQgMjQgNTRjMTEuMDYgMCAyMC04LjcwMyAyMC0xOS40MTRhMiAyIDAgMCAxIDQgMGMwIDEyLjI4Ni05LjY5IDIyLjM0NC0yMiAyMy4zMzR6TTEwIDEzLjk5NEMxMCA2LjI3IDE2LjI3NyAwIDI0IDBjNy43MyAwIDE0IDYuMjY3IDE0IDEzLjk5NHYyMC4wMTJDMzggNDEuNzMgMzEuNzIzIDQ4IDI0IDQ4Yy03LjczIDAtMTQtNi4yNjctMTQtMTMuOTk0VjEzLjk5NHoiLz4KPC9zdmc+');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #2a2c2c;
+    overflow: hidden;
+}
+
+video {
+    width: 100%;
+}
+
+.video > div:before {
+    content: '';
+    display: block;
+    width: 100%;
+    padding-bottom: 75%;
+}
+
+.video:after {
+    content: '';
+    position: absolute;
+    display: block;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    border: 5px solid #fff;
+    border-radius: 10px;
+    box-sizing: border-box;
+    pointer-events: none;
+}
+
+.video[data-mode="dark"]:after {
+    border: 0;
+}
+
+.video:not(.blured):hover > div > svg {
+    top: -24px;
+    left: -24px;
+    transition: .2s ease .2s;
+}
+
+.video:not(.blured):hover > div.pro:after, .video:not(.blured):hover > div.extreme:after, .video:not(.blured):hover > div.gold:after {
+    top: -24px;
+    right: -24px;
+    transition: .2s ease .2s;
+}
+
+.video > div > div {
+    position: relative;
+    width: 100%;
+}
+
+.video > div > video, .video > div > iframe {
+    position: absolute;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.video > div > iframe {
+    width: 100%;
+}
+
+.video > div.ratio-16-9 > video, .video > div.ratio-16-9 > iframe {
+    left: -16.66%;
+}
+
+.video > div.ratio-8-5 > video, .video > div.ratio-8-5 > iframe {
+    left: -10%;
+}
+
+.video > div.ratio-3-2 > video, .video > div.ratio-3-2 > iframe {
+    left: -6.25%;
+}
+
+.video > div > .overlay {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    box-shadow: inset 0 0 0 0 rgba(0, 0, 0, .5);
+    transition: .2s;
+}
+
+.video:not(.blured):hover > div > .overlay {
+    box-shadow: inset 0 0 100px 0 rgba(0, 0, 0, .5);
+}
+
+.icon-visibility, .icon-resize, .icon-report, .icon-filter, .icon-close {
+    position: absolute;
+    height: 22px;
+    width: 22px;
+    top: -22px;
+    padding: 0;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    opacity: .9;
+    transition: .2s;
+}
+
+.icon-visibility {
+    left: -22px;
+}
+
+.icon-resize {
+    left: 50%;
+    margin-left: -11px;
+}
+
+.icon-report, .icon-close {
+    right: -22px;
+}
+
+.icon-filter {
+    width: 26px;
+    right: -26px;
+}
+
+.icon-visibility:hover, .icon-resize:hover, .icon-report:hover, .icon-filter:hover, .icon-close:hover {
+    opacity: 1;
+}
+
+.video:not(.blured):hover > div > .overlay > .icon-visibility, .video:not(.blured):hover > div > .overlay > .icon-resize, .video:not(.blured):hover > div > .overlay > .icon-report, .video:not(.blured):hover > div > .overlay > .icon-filter, .video:not(.blured):hover > div > .overlay > .icon-close {
+    top: 12px;
+    transition: top .2s ease .2s, left .2s ease .2s, right .2s ease .2s, opacity .2s;
+}
+
+.video:not(.blured):hover > div > .overlay > .icon-visibility {
+    left: 14px;
+}
+
+.video:not(.blured):hover > div > .overlay > .icon-report, .video:not(.blured):hover > div > .overlay > .icon-close {
+    right: 14px;
+}
+
+.video:not(.blured):hover > div > .overlay > .icon-filter {
+    right: 12px;
+}
+
+.icon-visibility > svg, .icon-resize > svg, .icon-report > svg, .icon-filter > svg, .icon-close > svg {
+    position: absolute;
+}
+
+.video.not-visible > div > .overlay > .icon-visibility > svg, .icon-visibility > svg {
+    top: 4px;
+    left: 1px;
+    opacity: 0;
+    visibility: hidden;
+    transition: .2s;
+}
+
+.video.not-visible > div > .overlay > .icon-visibility > svg:first-child, .icon-visibility > svg + svg {
+    opacity: 1;
+    visibility: visible;
+}
+
+.video.not-visible > div > iframe {
+    visibility: hidden;
+}
+
+.icon-resize > svg {
+    top: 3px;
+    left: 3px;
+}
+
+.icon-resize > svg > path {
+    transition: .2s;
+}
+
+.video.large > div > .overlay > .icon-resize > svg > path + path {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.icon-report > svg {
+    top: 3px;
+    left: 3px;
+}
+
+.icon-filter > svg {
+    top: 1px;
+    left: 0;
+}
+
+.icon-close > svg {
+    top: 4px;
+    left: 4px;
+}
+
+.icon-context {
+    position: absolute;
+    height: 22px;
+    width: 22px;
+    bottom: -22px;
+    right: -22px;
+    padding: 0;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    opacity: .9;
+    transition: .2s;
+}
+
+.icon-context:hover {
+    opacity: 1;
+}
+
+.video:not(.blured):hover > div > .overlay > .icon-context {
+    bottom: 7px;
+    right: 16px;
+    transition: bottom .2s ease .2s, right .2s ease .2s, opacity .2s;
+}
+
+.icon-context > svg {
+    position: absolute;
+    top: 9px;
+    left: 1px;
+}
+
+.video-context {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 0, 0, .06);
+    box-sizing: border-box;
+    font-size: 0;
+    color: #535353;
+    text-align: left;
+    line-height: 1;
+    background-color: rgba(0, 0, 0, .7);
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, .09);
+    z-index: 1;
+    opacity: 0;
+    visibility: hidden;
+    transition: .2s;
+}
+
+.video-context::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+.video-context::-webkit-scrollbar-thumb {
+    border: 5px solid transparent;
+    border-radius: 6px/8px;
+    background-color: rgba(255, 255, 255, .1);
+    background-clip: content-box;
+}
+
+.video-context::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 255, 255, .2);
+}
+
+.video:not(.blured):hover > div > .overlay > .icon-context:focus + .video-context {
+    opacity: 1;
+    visibility: visible;
+}
+
+.video-context-content {
+    margin: 0 auto;
+}
+
+.video-context-content > div {
+    text-align: center;
+}
+
+.video-context-content > div + div {
+    padding-top: 5px;
+}
+
+.video-context-content > div > button {
+    display: block;
+    width: 100%;
+    padding: 0 20px;
+    border: none;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    background-color: transparent;
+    line-height: 26px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.video-context-content > div > button:hover {
+    color: #fff;
+    background-color: #04caff;
+}
+
+.icon-volume {
+    position: absolute;
+    height: 22px;
+    left: -22px;
+    bottom: -22px;
+    opacity: .9;
+    transition: .2s;
+}
+
+.icon-volume:hover {
+    opacity: 1;
+}
+
+.video:not(.blured):hover > div > .overlay > .icon-volume {
+    left: 16px;
+    bottom: 16px;
+    transition: bottom .2s ease .2s, left .2s ease .2s, opacity .2s;
+}
+
+#icon-state > button {
+    position: relative;
+    height: 22px;
+    width: 22px;
+    padding: 0;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+#icon-state > button > svg {
+    position: absolute;
+    display: block;
+    top: 2px;
+    left: 2px;
+}
+
+#icon-state > button > svg + svg {
+    top: 1px;
+    left: 2px;
+    transition: .2s;
+}
+
+#icon-state > button > svg {
+    opacity: 1;
+    visibility: visible;
+}
+
+#icon-state > button > svg + svg {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.video > div > .waiting {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background-color: #202628;
+    opacity: 0;
+    visibility: hidden;
+    transition: .2s;
+}
+
+.video > div.wait > .waiting {
+    opacity: 1;
+    visibility: visible;
+}
+
+.waiting > .waiting-content {
+    position: absolute;
+    height: 0;
+    width: 80%;
+    top: 50%;
+    left: 10%;
+}
+
+.waiting > .waiting-content > span {
+    position: absolute;
+    display: inline-block;
+    height: 0;
+    width: 0;
+    top: -4px;
+    left: 0;
+    border: 4px solid #04caff;
+    border-radius: 100%;
+    opacity: 0;
+    animation: waiting 1s ease-in-out 0s infinite paused;
+    -webkit-animation: waiting 1s ease-in-out 0s infinite paused;
+}
+
+.waiting > .waiting-content > span:nth-child(2) {
+    animation-delay: .15s;
+    -webkit-animation-delay: .15s;
+}
+
+.waiting > .waiting-content > span:nth-child(3) {
+    animation-delay: .3s;
+    -webkit-animation-delay: .3s;
+}
+
+.waiting > .waiting-content > span:nth-child(4) {
+    animation-delay: .45s;
+    -webkit-animation-delay: .45s;
+}
+
+.video > div.wait > .waiting > .waiting-content > span {
+    animation-play-state: running;
+    -webkit-animation-play-state: running;
+}
+
+.video > div > .blured {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(30, 38, 40, .8);
+    font-size: 0;
+    white-space: nowrap;
+    z-index: 1;
+    opacity: 0;
+    visibility: hidden;
+    transition: .2s;
+}
+
+.video.blured > div > .blured {
+    opacity: 1;
+    visibility: visible;
+}
+
+.video.blured > div > video {
+    filter: blur(5px);
+}
+
+.video > div > .blured:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    width: 0;
+    vertical-align: middle;
+}
+
+.video > div > .blured > .blured-content {
+    width: 100%;
+    display: inline-block;
+    padding: 10px;
+    box-sizing: border-box;
+    font-weight: 400;
+    font-size: 14px;
+    vertical-align: middle;
+    white-space: normal;
+    text-align: center;
+}
+
+.video > div > .blured > .blured-content > div {
+    padding: 8px 0 24px;
+    color: #fff;
+}
+
+.video > div > .blured > .blured-content > a {
+    display: inline-block;
+    padding: 0 30px;
+    border-radius: 15px;
+    box-sizing: border-box;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 30px;
+    background-color: #04caff;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.video > div > .blured > .blured-content > a:hover {
+    background-color: #54ccf3;
+}
+
+.video > div > .blured > .blured-content > a:active {
+    background-color: #38a8de;
+}
+
+.video > div > svg {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    filter: drop-shadow(0 0 4px #04caff);
+    -webkit-filter: drop-shadow(0 0 4px #04caff);
+    opacity: 0;
+    transition: .2s;
+}
+
+#videos-content > #videos > .video:not(.blured):hover > div > svg {
+    top: -24px;
+    left: -24px;
+    transition: .2s ease .2s;
+}
+
+.video > div > svg > circle {
+    fill: #fff;
+    fill-rule: evenodd;
+    stroke: #fff;
+    stroke-width: 0;
+    transition: .2s;
+}
+
+.video > div > svg[data-mic-level="1"] {
+    opacity: .5;
+}
+
+.video > div > svg[data-mic-level="2"] {
+    opacity: .8;
+}
+
+.video > div > svg[data-mic-level="3"], .video > div > svg[data-mic-level="4"], .video > div > svg[data-mic-level="5"], .video > div > svg[data-mic-level="6"], .video > div > svg[data-mic-level="7"], .video > div > svg[data-mic-level="8"], .video > div > svg[data-mic-level="9"], .video > div > svg[data-mic-level="10"] {
+    opacity: 1;
+}
+
+.video > div > svg[data-mic-level="4"] > circle {
+    stroke-width: 1;
+}
+
+.video > div > svg[data-mic-level="5"] > circle {
+    stroke-width: 2;
+}
+
+.video > div > svg[data-mic-level="6"] > circle {
+    stroke-width: 3;
+}
+
+.video > div > svg[data-mic-level="7"] > circle {
+    stroke-width: 4;
+}
+
+.video > div > svg[data-mic-level="8"] > circle {
+    stroke-width: 5;
+}
+
+.video > div > svg[data-mic-level="9"] > circle {
+    stroke-width: 6;
+}
+
+.video > div > svg[data-mic-level="10"] > circle {
+    stroke-width: 7;
+}
+
+.video > div > .nickname {
+    position: absolute;
+    display: block;
+    height: 15px;
+    left: 10px;
+    right: 10px;
+    bottom: 12px;
+    margin-bottom: -7px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+    text-align: center;
+    text-shadow: 0 0 6px rgba(0, 0, 0, .8);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    cursor: default;
+    transition: .2s;
+}
+
+.video > div > .nickname > img {
+    position: relative;
+    display: inline-block;
+    height: 10px;
+    width: 10px;
+    top: 2px;
+    margin-right: 6px;
+    opacity: 1;
+    visibility: visible;
+    transition: .2s;
+}
+
+.video > div > .nickname > img[src=""] {
+    width: 0;
+    margin-right: 0;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.video:not(.blured):hover > div > .nickname {
+    bottom: 50%;
+    transition: .2s ease .2s;
+}
+
+.video > div.gold:after, .video > div.extreme:after, .video > div.pro:after {
+    content: '';
+    position: absolute;
+    display: block;
+    height: 24px;
+    width: 24px;
+    top: 10px;
+    right: 10px;
+    background-repeat: no-repeat;
+    transition: .2s;
+}
+
+.video > div.gold:after {
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+Cgk8Y2lyY2xlIGZpbGw9IiNmZmM2MmMiIGN4PSIxMiIgY3k9IjEyIiByPSIxMiIvPgoJPHBhdGggaWQ9ImJhZGdlLWdvbGQiIGQ9Ik0xNiAxMi41NzZ2LTEuMDE4aC0zLjU5NnYxLjUxaDEuMjZsLS4wMTIuMTA4Yy0uMDcuNjIyLS42MyAxLjAzNC0xLjQyIDEuMDM0LTEuMDY1IDAtMS43NTgtLjg0LTEuNzU4LTIuMjUgMC0xLjM3Ny42MDctMi4xNyAxLjYzOC0yLjE3LjY5OCAwIDEuMjQyLjM3IDEuNDAzLjkzN2gyLjM4OEMxNS43MiA5LjE0IDE0LjE3MyA4IDEyLjEgOCA5LjU1MiA4IDggOS40NTcgOCAxMS45OTIgOCAxNC41NiA5LjU1MiAxNiAxMi4xNzUgMTZjMi40IDAgMy44MjUtMS4zMDcgMy44MjUtMy40MjR6IiBmaWxsLXJ1bGU9ImV2ZW5vZGQiLz4KCTx1c2UgZmlsbD0iIzAwMCIgeGxpbms6aHJlZj0iI2JhZGdlLWdvbGQiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAgMSkiIGZpbGwtb3BhY2l0eT0iLjIiLz4KCTx1c2UgZmlsbD0iI2ZmZiIgeGxpbms6aHJlZj0iI2JhZGdlLWdvbGQiLz4KPC9zdmc+');
+}
+
+.video > div.extreme:after {
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+DQoJPGNpcmNsZSBmaWxsPSIjYWQ2YmNlIiBjeD0iMTIiIGN5PSIxMiIgcj0iMTIiLz4NCgk8cGF0aCBpZD0iYmFkZ2UtZXh0cmVtZSIgZD0iTTE0IDE2SDlWOGg1djEuNzM1aC0yLjcyNXYxLjI1OGgyLjUyM3YxLjczNWgtMi41MjN2MS41MUgxNHoiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPg0KCTx1c2UgZmlsbD0iIzAwMCIgeGxpbms6aHJlZj0iI2JhZGdlLWV4dHJlbWUiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAgMSkiIGZpbGwtb3BhY2l0eT0iLjIiLz4NCgk8dXNlIGZpbGw9IiNmZmYiIHhsaW5rOmhyZWY9IiNiYWRnZS1leHRyZW1lIi8+DQo8L3N2Zz4=');
+}
+
+.video > div.pro:after {
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+DQoJPGNpcmNsZSBmaWxsPSIjMzhjZDU3IiBjeD0iMTIiIGN5PSIxMiIgcj0iMTIiLz4NCgk8cGF0aCBpZD0iYmFkZ2UtcHJvIiBkPSJNMTUgMTAuNTQ0YzAgLjg5NC0uMjcyIDEuNTg1LS44MTcgMi4wNzItLjU0NS40ODctMS4zMi43My0yLjMyMi43M2gtLjYyNlYxNkg5VjhoMi44NmMxLjA0NiAwIDEuODMuMjIgMi4zNTQuNjYyLjUyNC40NDIuNzg2IDEuMDcuNzg2IDEuODgyem0tMy43NjYgMS4wNGguNDA3Yy4zMzYgMCAuNjAzLS4wOS44LS4yNzMuMi0uMTgyLjI5OC0uNDM0LjI5OC0uNzU1IDAtLjU0LS4zMS0uODEtLjkyNy0uODFoLS41NzZ2MS44NHoiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPg0KCTx1c2UgZmlsbD0iIzAwMCIgeGxpbms6aHJlZj0iI2JhZGdlLXBybyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAxKSIgZmlsbC1vcGFjaXR5PSIuMiIvPg0KCTx1c2UgZmlsbD0iI2ZmZiIgeGxpbms6aHJlZj0iI2JhZGdlLXBybyIvPg0KPC9zdmc+');
+}
+
+@keyframes waiting {
+    0% {
+        left: 0;
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        left: 100%;
+        opacity: 0;
+    }
+}
+
+@-webkit-keyframes waiting {
+    0% {
+        left: 0;
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        left: 100%;
+        opacity: 0;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    #videos {
+        top:12px;
+        right: 13px;
+        bottom: 12px;
+        left: 13px;
+    }
+
+    .video {
+        padding: 2px;
+    }
+
+    .video:after {
+        border-width: 2px;
+        border-radius: 4px;
+    }
+}
+
+.video.full-screen:after {
+    border-color: #101314;
+}

@@ -47,7 +47,7 @@
 }
 
 #chat-wrapper[data-mode="dark"] {
-  background-color:#202628;
+  background-color:transparent;
 }
 
 #chat-wider.active + #chat-wrapper {
