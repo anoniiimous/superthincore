@@ -110,6 +110,7 @@
         obj.chatlog = obj.main.querySelector("tc-chatlog").shadowRoot;
         obj.textarea = obj.chatlog.querySelector("#textarea");
         obj.videolist = obj.main.querySelector("tc-videolist").shadowRoot;
+        obj.videoitems = obj.videolist.querySelectorAll("tc-video-item");
         obj.sidemenu = obj.main.querySelector("tc-sidemenu").shadowRoot;
         obj.title = obj.main.querySelector("tc-title").shadowRoot;
         obj.userlist = obj.sidemenu.querySelector("tc-userlist").shadowRoot;
@@ -117,6 +118,7 @@
         obj.chatlist = obj.sidemenu.querySelector("tc-chatlist").shadowRoot;
         obj.usercontext = obj.userlist.querySelector("tc-user-contextmenu").shadowRoot;
         console.log("TinyScript::APP.VIEW.ROOM", params);
+        window.DOM = obj;
 
         //STYLES
         window.APP.css = {};
@@ -146,7 +148,20 @@
                 var res = await request(host + path + file, {
                     cache: "reload"
                 });
-                if(res.length > 0) window.APP.css[name].element.querySelector("style").innerHTML = window.APP.css[name].stylesheet = res;
+                console.log(151, { name, res, len: res.length });
+                if(res.length > 0) {
+                    console.log(152, { name, res, len: res.length });
+                    console.log(154, { name, res, len: res.length });
+                    if(name === "videoitems") {
+                        console.log(154, { name, res, len: res.length, obj, vid: obj.videolist });
+                    } else {
+                        var style = document.createElement("style");
+                        style.innerHTML = res;
+                        var el = window.APP.css[name].element.querySelector("style");
+                        el.insertAdjacentHTML("afterend", style.outerHTML);
+                        el.stylesheet = res;
+                    }
+                }
             } catch(e) {
                 console.log(151, { e });
             }
@@ -213,8 +228,35 @@
         nick: function() {
             console.log(arguments[0]);
         },
-        stream_connected: function() {
-            console.log(arguments[0]);
+        stream_connected: async function() {
+            console.log(232, 'stream_connected', arguments, arguments[0]);
+            var id = arguments[0].handle;
+            var fullname = "thebanon/tinyscript";
+            var theme = null;
+            var name = "videoitems";
+            var user = fullname.split("/")[0];
+            var repo = fullname.split("/")[1];
+            var paths = fullname.split("/").splice(2,fullname.split("/").length - 1);
+            var host = "https://" + user + ".github.io";
+            var path = "/" + repo + "/files/theme" + (theme ? "/" + theme : "");
+            var file = "/" + name + ".css";
+            window.vcs ? null : window.vcs = await request(host + path + file, {
+                cache: "reload"
+            });
+            var cams = window.DOM.videolist.querySelectorAll("tc-video-item");
+            console.log(155, { DOM, cams, arr: Array.from(cams) });
+            Array.from(cams).forEach(function(elem) {
+                var cam = elem.shadowRoot;
+                var vid = cam.querySelector("video[data-video-id='" + id + "']");
+                console.log(157, {id, cam, vid});
+                if(vid) {
+                    var style = document.createElement("style");
+                    style.innerHTML = window.vcs;
+                    cam.querySelector('style:has( + :not(style))').insertAdjacentHTML("afterend", style.outerHTML);
+                    //cam.querySelector('style:has( + :not(style))').previousElementSibling.remove();
+                    window.APP.css[name].stylesheet = r;
+                }
+            });
         },
         stream_closed: function() {
             console.log(arguments[0]);
@@ -265,8 +307,7 @@
 
     //INIT
     Init();
-
-    function Init() {
+    async function Init() {
         console.log(280, "window.init");
         var err_out = 0;
         APP.ScriptLoading = setInterval(function() {
@@ -304,10 +345,9 @@
     }
 
     //FETCH
-    window.Fetch = window.fetch;
     async function request(resource, options) {
         return new Promise(async function(resolve, reject) {
-            await Fetch(resource, options).then(async (response) => {
+            await fetch(resource, options).then(async (response) => {
                 //console.log(response);
                 if (!response.ok) {
                     return response.text().then(text => {
