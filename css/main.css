@@ -1,0 +1,30 @@
+#menu {
+    display: none;
+}
+
+#mobile-app.show {
+    display: none;
+}
+
+html {
+    background: rgba(0,0,0,1);
+}
+
+#menu-icon {
+    display: none;
+}
+
+body {
+    background: " + CTS.MainBackground + ";
+    background-position: center!important;
+    background-size: cover!important;
+    overflow: hidden;
+}
+
+#nav-static-wrapper {
+    display: none;
+}
+
+#content {
+    padding: 0!important;
+}
