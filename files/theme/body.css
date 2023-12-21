@@ -7,3 +7,7 @@ body[data-mode="dark"] {
     background: #111;
     color: #eee;
 }
+
+#nav-static-wrapper {
+    background: transparent;
+}
