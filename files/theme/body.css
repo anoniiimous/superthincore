@@ -15,3 +15,7 @@ body[data-mode="dark"] {
 #chat-wrapper[data-mode="dark"] {
     background: transparent;    
 }
+
+#room-header[data-mode="dark"] {
+    background: transparent;    
+}
