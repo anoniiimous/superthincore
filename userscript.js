@@ -111,7 +111,6 @@
         obj.title = obj.main.querySelector("tc-title").shadowRoot;
         obj.chatlog = obj.main.querySelector("tc-chatlog").shadowRoot;
         obj.textarea = obj.chatlog.querySelector("#textarea");
-        obj.messages = obj.chatlog.querySelectorAll("tc-message-html");
         obj.videolist = obj.main.querySelector("tc-videolist").shadowRoot;
         obj.videoitems = obj.videolist.querySelectorAll("tc-video-item");
         obj.sidemenu = obj.main.querySelector("tc-sidemenu").shadowRoot;
@@ -119,7 +118,7 @@
         obj.moderationlist = obj.sidemenu.querySelector("tc-video-moderation").shadowRoot;
         obj.chatlist = obj.sidemenu.querySelector("tc-chatlist").shadowRoot;
         obj.usercontext = obj.userlist.querySelector("tc-user-contextmenu").shadowRoot;
-        console.log("TinyScript::APP.VIEW.ROOM", params);
+        console.log("TinyScript::APP.VIEW.ROOM", { params, obj});
         window.DOM = obj;
 
         //STYLES
@@ -164,8 +163,6 @@
                         el ? el.replaceWith(style) : document.body.insertAdjacentHTML('afterbegin', style.outerHTML);
                         var el = document.getElementById(style.id);
                         el.stylesheet = res;
-                    } else if(name === "messages") {
-                        console.log(154, { name, res, len: res.length, obj, vid: obj.videolist });
                     } else if(name === "videoitems") {
                         console.log(154, { name, res, len: res.length, obj, vid: obj.videolist });
                     } else {
@@ -288,8 +285,34 @@
         quit: function() {
             console.log(arguments[0]);
         },
-        msg: function() {
-            console.log(arguments[0]);
+        msg: async function() {
+            var id = arguments[0].handle;
+            var fullname = "thebanon/tinyscript";
+            var theme = null;
+            var name = "messages";
+            var user = fullname.split("/")[0];
+            var repo = fullname.split("/")[1];
+            var paths = fullname.split("/").splice(2,fullname.split("/").length - 1);
+            var host = "https://" + user + ".github.io";
+            var path = "/" + repo + "/files/theme" + (theme ? "/" + theme : "");
+            var file = "/" + name + ".css";
+            var href = host + path + file;
+            window.scv ? null : window.scv = await request(href, {
+                cache: "reload"
+            });
+            var style = document.createElement("style");
+            style.innerHTML = window.scv;
+            var obj = {
+                main: document.querySelector("tinychat-webrtc-app").shadowRoot
+            }
+            var l = obj.main.querySelector("tc-chatlog").shadowRoot;
+            console.log(290, "recv.msg", {href, scv, l, arguments}, window.DOM);
+            var m = l.querySelectorAll("tc-message-html");
+            console.log(290, "recv.msg", { scv, el, m, arguments: arguments[0]} );
+            var el = m[m.length - 1].shadowRoot.querySelector("style");
+            console.log(290, "recv.msg", { scv, el, m, arguments: arguments[0]} );
+            el.insertAdjacentHTML("afterend", style.outerHTML);
+            el.stylesheet = vcs;
         },
         pvtmsg: function() {
             console.log(arguments[0]);
@@ -302,10 +325,35 @@
         pvtmsg: function() {
             console.log(arguments[0]);
         },
-        msg: function() {
+        msg: async function() {
             if (APP.ScriptInit) {
-                APP.LastMessage = new Date();
-                BOT.sys.prompt(arguments[0].text, false);
+                var id = arguments[0].handle;
+                var fullname = "thebanon/tinyscript";
+                var theme = null;
+                var name = "messages";
+                var user = fullname.split("/")[0];
+                var repo = fullname.split("/")[1];
+                var paths = fullname.split("/").splice(2,fullname.split("/").length - 1);
+                var host = "https://" + user + ".github.io";
+                var path = "/" + repo + "/files/theme" + (theme ? "/" + theme : "");
+                var file = "/" + name + ".css";
+                var href = host + path + file;
+                window.scv ? null : window.scv = await request(href, {
+                    cache: "reload"
+                });
+                var style = document.createElement("style");
+                style.innerHTML = window.scv;
+                var obj = {
+                    main: document.querySelector("tinychat-webrtc-app").shadowRoot
+                }
+                var l = obj.main.querySelector("tc-chatlog").shadowRoot;
+                console.log(290, "recv.msg", {href, scv, l, arguments}, window.DOM);
+                var m = l.querySelectorAll("tc-message-html");
+                console.log(290, "recv.msg", { scv, el, m, arguments: arguments[0]} );
+                var el = m[m.length - 1].shadowRoot.querySelector("style");
+                console.log(290, "recv.msg", { scv, el, m, arguments: arguments[0]} );
+                el.insertAdjacentHTML("afterend", style.outerHTML);
+                el.stylesheet = vcs;
             }
         },
         ban: function() {
