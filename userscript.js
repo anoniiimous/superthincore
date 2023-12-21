@@ -108,14 +108,12 @@
         var obj = {}
         obj.body = document.body;
         obj.main = document.querySelector("tinychat-webrtc-app").shadowRoot;
-        obj.title = obj.main.querySelector("tc-titlke").shadowRoot;
+        obj.title = obj.main.querySelector("tc-title").shadowRoot;
         obj.chatlog = obj.main.querySelector("tc-chatlog").shadowRoot;
         obj.textarea = obj.chatlog.querySelector("#textarea");
         obj.videolist = obj.main.querySelector("tc-videolist").shadowRoot;
         obj.videoitems = obj.videolist.querySelectorAll("tc-video-item");
         obj.sidemenu = obj.main.querySelector("tc-sidemenu").shadowRoot;
-        obj.title = obj.main.querySelector("tc-title").shadowRoot;
-        obj.userinfo = obj.sidemenu.querySelector("user-info");
         obj.userlist = obj.sidemenu.querySelector("tc-userlist").shadowRoot;
         obj.moderationlist = obj.sidemenu.querySelector("tc-video-moderation").shadowRoot;
         obj.chatlist = obj.sidemenu.querySelector("tc-chatlist").shadowRoot;
@@ -156,12 +154,17 @@
                     console.log(152, { name, res, len: res.length });
                     if(name === "body") {
                         var style = document.createElement("style");
+                        var backgroundColor = "#ffff69";
                         style.id = "style-body";
                         style.innerHTML = res;
+                        document.body.removeAttribute("data-mode");
+                        document.body.style.backgroundColor = backgroundColor;
                         var el = document.body.querySelector("#style-body");
                         el ? el.replaceWith(style) : document.body.insertAdjacentHTML('afterbegin', style.outerHTML);
                         var el = document.getElementById(style.id);
                         el.stylesheet = res;
+                    } else if(name === "message") {
+                        console.log(154, { name, res, len: res.length, obj, vid: obj.videolist });
                     } else if(name === "videoitems") {
                         console.log(154, { name, res, len: res.length, obj, vid: obj.videolist });
                     } else {
