@@ -5,7 +5,7 @@ body:not([data-mode="dark"]) {
 
 body[data-mode="dark"] {
     background: #111;
-    background: #ff3b30;
+    background: #ff;
     color: #eee;
 }
 
