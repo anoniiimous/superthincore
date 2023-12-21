@@ -1,5 +1,5 @@
 #sidemenu-content {
-  overflow-x:hidden;overflow-y:scroll;
+  overflow-x:hidden;overflow-y:scroll;overflow:hidden;
 }
 
 #sidemenu-content::-webkit-scrollbar {
