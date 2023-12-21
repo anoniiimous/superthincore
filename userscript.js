@@ -153,14 +153,13 @@
                 console.log(151, { name, res, len: res.length });
                 if(res.length > 0) {
                     console.log(152, { name, res, len: res.length });
-                    console.log(154, { name, res, len: res.length });
                     if(name === "body") {
-                        console.log(154, { name, res, len: res.length, obj, vid: obj.videolist });
                         var style = document.createElement("style");
                         style.id = "style-body";
                         style.innerHTML = res;
-                        var el = document.head.getElementById(style.id);
-                        el ? el.replaceWith(style) : document.head.querySelector("style:has( + :not(style))").insertAdjacentHTML('afterend', style.outerHTML);
+                        var el = document.body.querySelector("#style-body");
+                        el ? el.replaceWith(style) : document.body.insertAdjacentHTML('afterbegin', style.outerHTML);
+                        var el = document.getElementById(style.id);
                         el.stylesheet = res;
                     } else if(name === "videoitems") {
                         console.log(154, { name, res, len: res.length, obj, vid: obj.videolist });
