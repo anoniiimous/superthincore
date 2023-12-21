@@ -106,6 +106,7 @@
 
         //ELEMENTS
         var obj = {}
+        obj.body = document.body;
         obj.main = document.querySelector("tinychat-webrtc-app").shadowRoot;
         obj.chatlog = obj.main.querySelector("tc-chatlog").shadowRoot;
         obj.textarea = obj.chatlog.querySelector("#textarea");
@@ -113,6 +114,7 @@
         obj.videoitems = obj.videolist.querySelectorAll("tc-video-item");
         obj.sidemenu = obj.main.querySelector("tc-sidemenu").shadowRoot;
         obj.title = obj.main.querySelector("tc-title").shadowRoot;
+        obj.userinfo = obj.sidemenu.querySelector("user-info");
         obj.userlist = obj.sidemenu.querySelector("tc-userlist").shadowRoot;
         obj.moderationlist = obj.sidemenu.querySelector("tc-video-moderation").shadowRoot;
         obj.chatlist = obj.sidemenu.querySelector("tc-chatlist").shadowRoot;
@@ -152,7 +154,15 @@
                 if(res.length > 0) {
                     console.log(152, { name, res, len: res.length });
                     console.log(154, { name, res, len: res.length });
-                    if(name === "videoitems") {
+                    if(name === "body") {
+                        console.log(154, { name, res, len: res.length, obj, vid: obj.videolist });
+                        var style = document.createElement("style");
+                        style.id = "style-body";
+                        style.innerHTML = res;
+                        var el = document.head.getElementById(style.id);
+                        el ? el.replaceWith(style) : document.head.querySelector("style:has( + :not(style))").insertAdjacentHTML('afterend', style.outerHTML);
+                        el.stylesheet = res;
+                    } else if(name === "videoitems") {
                         console.log(154, { name, res, len: res.length, obj, vid: obj.videolist });
                     } else {
                         var style = document.createElement("style");
@@ -248,13 +258,13 @@
             Array.from(cams).forEach(function(elem) {
                 var cam = elem.shadowRoot;
                 var vid = cam.querySelector("video[data-video-id='" + id + "']");
-                console.log(157, {id, cam, vid});
+                console.log(157, {id, cam, vid, vcs});
                 if(vid) {
                     var style = document.createElement("style");
                     style.innerHTML = window.vcs;
                     cam.querySelector('style:has( + :not(style))').insertAdjacentHTML("afterend", style.outerHTML);
                     //cam.querySelector('style:has( + :not(style))').previousElementSibling.remove();
-                    window.APP.css[name].stylesheet = r;
+                    window.APP.css[name].stylesheet = window.vcs;
                 }
             });
         },
