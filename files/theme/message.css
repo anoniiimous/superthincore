@@ -1,0 +1,47 @@
+.message {
+  font-size:14px;color:#2e373a;white-space:pre-line;word-wrap:break-word;
+}
+
+.message.system {
+  font-size:12px;font-weight:600;color:#8f999c;
+}
+
+.message.gift {
+  padding-bottom:12px;font-size:12px;font-weight:600;color:#8f999c;cursor:default;
+}
+
+.message[data-mode="dark"] {
+  color:#fff;
+}
+
+.message.sub-pro, .message.sub-extreme, .message.sub-gold {
+  font-weight:600;font-size:14px;color:#3c3c3c;white-space:nowrap;
+}
+
+.message.sub-pro > span {
+  color:#3fd64f;
+}
+
+.message.sub-extreme > span {
+  color:#c27ddf;
+}
+
+.message.sub-gold > span {
+  color:#f3b100;
+}
+
+.full-screen.message {
+  color:#fff;
+}
+
+a {
+  color:#4682b4;
+}
+
+@media screen and (max-width: 600px) {
+.message {
+  font-size:12px;
+}
+
+}
+
