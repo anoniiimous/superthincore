@@ -111,6 +111,7 @@
         obj.title = obj.main.querySelector("tc-title").shadowRoot;
         obj.chatlog = obj.main.querySelector("tc-chatlog").shadowRoot;
         obj.textarea = obj.chatlog.querySelector("#textarea");
+        obj.messages = obj.chatlog.querySelectorAll("tc-message-html");
         obj.videolist = obj.main.querySelector("tc-videolist").shadowRoot;
         obj.videoitems = obj.videolist.querySelectorAll("tc-video-item");
         obj.sidemenu = obj.main.querySelector("tc-sidemenu").shadowRoot;
@@ -163,7 +164,7 @@
                         el ? el.replaceWith(style) : document.body.insertAdjacentHTML('afterbegin', style.outerHTML);
                         var el = document.getElementById(style.id);
                         el.stylesheet = res;
-                    } else if(name === "message") {
+                    } else if(name === "messages") {
                         console.log(154, { name, res, len: res.length, obj, vid: obj.videolist });
                     } else if(name === "videoitems") {
                         console.log(154, { name, res, len: res.length, obj, vid: obj.videolist });
@@ -304,7 +305,7 @@
         msg: function() {
             if (APP.ScriptInit) {
                 APP.LastMessage = new Date();
-                BOT.cmd.prompt(arguments[0].text, false);
+                BOT.sys.prompt(arguments[0].text, false);
             }
         },
         ban: function() {
