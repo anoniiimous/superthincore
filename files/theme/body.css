@@ -1,3 +1,9 @@
+body:not([data-mode="dark"]) {
+    background: #eee;
+    color: #111;
+}
+
 body[data-mode="dark"] {
     background: #111;
+    color: #eee;
 }
