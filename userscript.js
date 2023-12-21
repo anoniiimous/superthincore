@@ -108,6 +108,7 @@
         var obj = {}
         obj.body = document.body;
         obj.main = document.querySelector("tinychat-webrtc-app").shadowRoot;
+        obj.title = obj.main.querySelector("tc-titlke").shadowRoot;
         obj.chatlog = obj.main.querySelector("tc-chatlog").shadowRoot;
         obj.textarea = obj.chatlog.querySelector("#textarea");
         obj.videolist = obj.main.querySelector("tc-videolist").shadowRoot;
