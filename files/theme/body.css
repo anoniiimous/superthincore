@@ -11,3 +11,7 @@ body[data-mode="dark"] {
 #nav-static-wrapper {
     background: transparent;
 }
+
+#chat-wrapper[data-mode="dark"] {
+    background: transparent;    
+}
