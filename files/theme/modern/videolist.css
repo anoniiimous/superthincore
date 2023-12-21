@@ -122,7 +122,7 @@
 }
 
 [data-mode="dark"] #videos-header {
-    background-color: #101314;
+    background-color: transparent;
 }
 
 #videolist.hide-header > #videos-header {
