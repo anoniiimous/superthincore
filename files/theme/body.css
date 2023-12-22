@@ -4,11 +4,13 @@ body {
 
 body:not([data-mode="dark"]) {
     background: #eee;
+    background: #c0c0c0;
     color: #111;
 }
 
 body[data-mode="dark"] {
     background: #111;
+    background: #c0c0c0;
     color: #eee;
 }
 
