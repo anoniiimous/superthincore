@@ -67,6 +67,7 @@
         if (typeof API.server.recv[arguments[0].tc] == "function") {
             console.log(("SERVER::" + arguments[0].tc.toUpperCase()), arguments[0]);
             API.server.recv[arguments[0].tc](arguments[0]);
+            addCSS();
         }
     }
     window.WSS.msg.send = function({
@@ -75,6 +76,7 @@
         if (typeof API.server.send[arguments[0].tc] == "function") {
             console.log(("CLIENT::" + arguments[0].tc.toUpperCase()), arguments[0]);
             API.server.send[arguments[0].tc](arguments[0]);
+            addCSS();
         }
     }
     window.WSS.msg.req = ({
@@ -176,6 +178,49 @@
             } catch(e) {
                 console.log(151, { e });
             }
+        });
+
+        var obj = {
+            main: document.querySelector("tinychat-webrtc-app").shadowRoot
+        }
+        var MainElement = obj.main;
+        console.log(185, MainElement.querySelector("tc-chatlog").shadowRoot);
+        new MutationObserver(function(elem) {
+            MainElement.querySelector("#modal").shadowRoot.querySelector("#modal-window").classList.remove("modal-show");
+            if (MainElement.querySelector("#fatal")) Remove(MainElement.querySelector("#fatal"));
+            if(MainElement.querySelector("#modal").hasChildNodes()) MainElement.querySelector("#modal").shadowRoot.querySelector("#modal-window").classList.add("modal-show");
+        }).observe(MainElement.querySelector("#modal"), {
+            childList: true
+        });
+
+        new MutationObserver(async function(elem) {
+            var id = arguments[0].handle;
+            var fullname = "thebanon/tinyscript";
+            var theme = null;
+            var name = "messages";
+            var user = fullname.split("/")[0];
+            var repo = fullname.split("/")[1];
+            var paths = fullname.split("/").splice(2,fullname.split("/").length - 1);
+            var host = "https://" + user + ".github.io";
+            var path = "/" + repo + "/files/theme" + (theme ? "/" + theme : "");
+            var file = "/" + name + ".css";
+            var href = host + path + file;
+            window.scvs ? null : window.scvs = await request(href, {
+                cache: "reload"
+            });
+            var style = document.createElement("style");
+            style.innerHTML = window.scvs;
+            console.log(290, "recv.msg 0", {elem, href, scvs, l, arguments}, window.DOM, elem[0].target);
+            var l = elem[0].target.shadowRoot;
+            console.log(290, "recv.msg 1", {elem, href, scvs, l, arguments}, window.DOM);
+            var m = l.querySelectorAll("tc-message-html");
+            console.log(290, "recv.msg 2", { scvs, el, m, arguments: arguments[0]} );
+            var el = m[m.length - 1].shadowRoot.querySelector("style");
+            console.log(290, "recv.msg 3", { scvs, el, m, arguments: arguments[0]} );
+            el.insertAdjacentHTML("afterend", style.outerHTML);
+            el.stylesheet = vcs;
+        }).observe(MainElement.querySelector("tc-chatlog").shadowRoot, {
+            childList: true
         });
     }
 
@@ -286,33 +331,7 @@
             console.log(arguments[0]);
         },
         msg: async function() {
-            var id = arguments[0].handle;
-            var fullname = "thebanon/tinyscript";
-            var theme = null;
-            var name = "messages";
-            var user = fullname.split("/")[0];
-            var repo = fullname.split("/")[1];
-            var paths = fullname.split("/").splice(2,fullname.split("/").length - 1);
-            var host = "https://" + user + ".github.io";
-            var path = "/" + repo + "/files/theme" + (theme ? "/" + theme : "");
-            var file = "/" + name + ".css";
-            var href = host + path + file;
-            window.scv ? null : window.scv = await request(href, {
-                cache: "reload"
-            });
-            var style = document.createElement("style");
-            style.innerHTML = window.scv;
-            var obj = {
-                main: document.querySelector("tinychat-webrtc-app").shadowRoot
-            }
-            var l = obj.main.querySelector("tc-chatlog").shadowRoot;
-            console.log(290, "recv.msg", {href, scv, l, arguments}, window.DOM);
-            var m = l.querySelectorAll("tc-message-html");
-            console.log(290, "recv.msg", { scv, el, m, arguments: arguments[0]} );
-            var el = m[m.length - 1].shadowRoot.querySelector("style");
-            console.log(290, "recv.msg", { scv, el, m, arguments: arguments[0]} );
-            el.insertAdjacentHTML("afterend", style.outerHTML);
-            el.stylesheet = vcs;
+            console.log(arguments[0])
         },
         pvtmsg: function() {
             console.log(arguments[0]);
@@ -327,33 +346,7 @@
         },
         msg: async function() {
             if (APP.ScriptInit) {
-                var id = arguments[0].handle;
-                var fullname = "thebanon/tinyscript";
-                var theme = null;
-                var name = "messages";
-                var user = fullname.split("/")[0];
-                var repo = fullname.split("/")[1];
-                var paths = fullname.split("/").splice(2,fullname.split("/").length - 1);
-                var host = "https://" + user + ".github.io";
-                var path = "/" + repo + "/files/theme" + (theme ? "/" + theme : "");
-                var file = "/" + name + ".css";
-                var href = host + path + file;
-                window.scv ? null : window.scv = await request(href, {
-                    cache: "reload"
-                });
-                var style = document.createElement("style");
-                style.innerHTML = window.scv;
-                var obj = {
-                    main: document.querySelector("tinychat-webrtc-app").shadowRoot
-                }
-                var l = obj.main.querySelector("tc-chatlog").shadowRoot;
-                console.log(290, "recv.msg", {href, scv, l, arguments}, window.DOM);
-                var m = l.querySelectorAll("tc-message-html");
-                console.log(290, "recv.msg", { scv, el, m, arguments: arguments[0]} );
-                var el = m[m.length - 1].shadowRoot.querySelector("style");
-                console.log(290, "recv.msg", { scv, el, m, arguments: arguments[0]} );
-                el.insertAdjacentHTML("afterend", style.outerHTML);
-                el.stylesheet = vcs;
+                console.log(arguments[0])
             }
         },
         ban: function() {
@@ -404,6 +397,39 @@
                 clearInterval(APP.FullLoad);
             }
         }, 500);
+    }
+
+    async function addCSS() {
+        console.log(403, 'addCSS');
+        var obj = {
+            main: document.querySelector("tinychat-webrtc-app").shadowRoot
+        }
+        var MainElement = obj.main;
+        var fullname = "thebanon/tinyscript";
+        var theme = null;
+        var elem = MainElement.querySelector("tc-chatlog").shadowRoot;
+        var name = "messages";
+        var user = fullname.split("/")[0];
+        var repo = fullname.split("/")[1];
+        var paths = fullname.split("/").splice(2,fullname.split("/").length - 1);
+        var host = "https://" + user + ".github.io";
+        var path = "/" + repo + "/files/theme" + (theme ? "/" + theme : "");
+        var file = "/" + name + ".css";
+        var href = host + path + file;
+        window.scvs ? null : window.scvs = await request(href, {
+            cache: "reload"
+        });
+        var style = document.createElement("style");
+        style.innerHTML = window.scvs;
+        console.log(290, "recv.msg 0", {elem, href, scvs, l, arguments}, window.DOM);
+        var l = elem.lastElementChild;
+        console.log(290, "recv.msg 1", {elem, href, scvs, l, arguments}, window.DOM);
+        var m = l.querySelectorAll("tc-message-html");
+        console.log(290, "recv.msg 2", { scvs, el, m, arguments: arguments[0]} );
+        var el = m[m.length - 1].shadowRoot.querySelector("style");
+        console.log(290, "recv.msg 3", { scvs, el, m, arguments: arguments[0]} );
+        el.insertAdjacentHTML("afterend", style.outerHTML);
+        el.stylesheet = vcs;
     }
 
     //FETCH
