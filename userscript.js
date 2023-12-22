@@ -156,11 +156,12 @@
                     console.log(152, { name, res, len: res.length });
                     if(name === "body") {
                         var style = document.createElement("style");
-                        var backgroundColor = "#ffff69";
+                        //var backgroundColor = "#ffff69";
+                        var backgroundColor = "#c0c0c0";
                         style.id = "style-body";
                         style.innerHTML = res;
                         document.body.removeAttribute("data-mode");
-                        document.body.style.backgroundColor = backgroundColor;
+                        //document.body.style.backgroundColor = backgroundColor;
                         var el = document.body.querySelector("#style-body");
                         el ? el.replaceWith(style) : document.body.insertAdjacentHTML('afterbegin', style.outerHTML);
                         var el = document.getElementById(style.id);
@@ -192,6 +193,18 @@
         }).observe(MainElement.querySelector("#modal"), {
             childList: true
         });
+        document.body.onclick = () => {
+            var set = MainElement.querySelector("#modal #settings");
+            if(set) {
+                var settings = set.shadowRoot.querySelector("#modal-content-settings");
+                console.log(197, settings, settings.getAttribute("data-mode"));
+                if(settings.getAttribute("data-mode") === "dark") {
+                    document.body.removeAttribute("data-mode", "dark");
+                } else {
+                    document.body.setAttribute("data-mode", "dark");
+                }
+            }
+        }
     }
 
     //BOT
