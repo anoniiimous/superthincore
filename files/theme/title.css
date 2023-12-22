@@ -122,7 +122,7 @@
 }
 
 [data-mode="dark"] #room-header-info-text {
-    color: #7b868a;
+    color: #333;
 }
 
 [data-mode="dark"] #room-header-info-text:after {
@@ -140,7 +140,7 @@
 }
 
 [data-mode="dark"] #room-header-info-details {
-    color: #fff;
+    color: #000;
 }
 
 #room-header-info-details > span:after {
