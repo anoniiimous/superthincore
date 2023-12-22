@@ -2,13 +2,13 @@ body {
     overflow: hidden;
 }
 
-body:not([data-mode="dark"]) {
+body:has(#room-header[data-mode="dark"]) {
     background: #eee;
     background: #c0c0c0;
     color: #111;
 }
 
-body[data-mode="dark"] {
+body:has(#room-header:not([data-mode="dark"])) {
     background: #111;
     background: #0c0c0c;
     color: #eee;
