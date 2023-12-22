@@ -1,0 +1,17 @@
+body {
+    overflow: hidden;
+    background: #ffff69;
+    color: #000;
+}
+
+#nav-static-wrapper {
+    background: transparent;
+}
+
+#chat-wrapper[data-mode="dark"] {
+    background: transparent;    
+}
+
+#room-header[data-mode="dark"] {
+    background: transparent;    
+}
