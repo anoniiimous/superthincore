@@ -1,3 +1,7 @@
+body {
+    overflow: hidden;
+}
+
 body:not([data-mode="dark"]) {
     background: #eee;
     color: #111;
