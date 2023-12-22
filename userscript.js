@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        TinyScript
-// @version     0.0.1
+// @version     0.0.3
 // @description A TinyChat Launcher improving moderation, enabling bots, and sharing themes in a compact userscript.
 // @author      thebanon
 // @license     Copyright (C) thebanon
@@ -14,7 +14,7 @@
 // @exclude     https://tinychat.com/gifts*
 // @grant       none
 // @run-at      document-start
-// @namespace https://greasyfork.org/users/______
+// @namespace https://greasyfork.org/users/1236617
 // ==/UserScript==
 
 (function() {
