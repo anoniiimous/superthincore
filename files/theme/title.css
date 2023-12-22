@@ -11,7 +11,7 @@
     min-height: 140px;
     max-height: 140px;
     box-sizing: border-box;
-    background-color: #f6f6f6;
+    background-color: transparent;
     border-bottom: unset;
     text-align: left;
 }
