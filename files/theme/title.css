@@ -78,7 +78,7 @@
 }
 
 [data-mode="dark"] #room-header-info > h1 {
-    color: #fff;
+    color: #000;
 }
 
 [data-mode="dark"] #room-header-info > h1:after {
