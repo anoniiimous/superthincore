@@ -67,7 +67,7 @@
 }
 
 [data-mode="dark"] #chat-instant {
-  background-color:#transparent;
+  background-color:transparent;
 }
 
 #chat-instant.show {
