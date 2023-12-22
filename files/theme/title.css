@@ -12,6 +12,7 @@
     max-height: 140px;
     box-sizing: border-box;
     background-color: #f6f6f6;
+    border-bottom: unset;
     text-align: left;
 }
 
