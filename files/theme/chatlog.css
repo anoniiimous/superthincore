@@ -43,7 +43,7 @@
 }
 
 #chat-wrapper {
-  min-width:350px;border-left:unset;box-sizing:border-box;background-color:#fff;overflow-x:hidden;transition:.8s;
+  min-width:350px;border-left:unset;box-sizing:border-box;background-color:transparent;overflow-x:hidden;transition:.8s;
 }
 
 #chat-wrapper[data-mode="dark"] {
