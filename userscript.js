@@ -192,36 +192,6 @@
         }).observe(MainElement.querySelector("#modal"), {
             childList: true
         });
-
-        new MutationObserver(async function(elem) {
-            var id = arguments[0].handle;
-            var fullname = "thebanon/tinyscript";
-            var theme = null;
-            var name = "messages";
-            var user = fullname.split("/")[0];
-            var repo = fullname.split("/")[1];
-            var paths = fullname.split("/").splice(2,fullname.split("/").length - 1);
-            var host = "https://" + user + ".github.io";
-            var path = "/" + repo + "/files/theme" + (theme ? "/" + theme : "");
-            var file = "/" + name + ".css";
-            var href = host + path + file;
-            window.scvs ? null : window.scvs = await request(href, {
-                cache: "reload"
-            });
-            var style = document.createElement("style");
-            style.innerHTML = window.scvs;
-            console.log(290, "recv.msg 0", {elem, href, scvs, l, arguments}, window.DOM, elem[0].target);
-            var l = elem[0].target.shadowRoot;
-            console.log(290, "recv.msg 1", {elem, href, scvs, l, arguments}, window.DOM);
-            var m = l.querySelectorAll("tc-message-html");
-            console.log(290, "recv.msg 2", { scvs, el, m, arguments: arguments[0]} );
-            var el = m[m.length - 1].shadowRoot.querySelector("style");
-            console.log(290, "recv.msg 3", { scvs, el, m, arguments: arguments[0]} );
-            el.insertAdjacentHTML("afterend", style.outerHTML);
-            el.stylesheet = vcs;
-        }).observe(MainElement.querySelector("tc-chatlog").shadowRoot, {
-            childList: true
-        });
     }
 
     //BOT
@@ -421,15 +391,21 @@
         });
         var style = document.createElement("style");
         style.innerHTML = window.scvs;
-        console.log(290, "recv.msg 0", {elem, href, scvs, l, arguments}, window.DOM);
+        console.log(290, "recv.msg.0", {elem, href, scvs, l, arguments}, window.DOM);
         var l = elem.lastElementChild;
-        console.log(290, "recv.msg 1", {elem, href, scvs, l, arguments}, window.DOM);
-        var m = l.querySelectorAll("tc-message-html");
-        console.log(290, "recv.msg 2", { scvs, el, m, arguments: arguments[0]} );
-        var el = m[m.length - 1].shadowRoot.querySelector("style");
-        console.log(290, "recv.msg 3", { scvs, el, m, arguments: arguments[0]} );
-        el.insertAdjacentHTML("afterend", style.outerHTML);
-        el.stylesheet = vcs;
+        console.log(290, "recv.msg.1", {elem, href, scvs, l, arguments}, window.DOM);
+        var m = l.querySelector("tc-message-html");
+        console.log(290, "recv.msg.2", { scvs, l, m, html: l.querySelectorAll("tc-message-html"), arguments: arguments[0]} );
+        //var els = m[m.length - 1];//.shadowRoot.querySelector("style");
+        Array.from(l.querySelectorAll("tc-message-html")).forEach(function(d) {
+            var e = d.shadowRoot;
+            console.log(290, "recv.msg 3", { scvs, e, m, arguments: arguments[0]} );
+            if (e) {
+                e.lastElementChild.insertAdjacentHTML("afterend", style.outerHTML);
+                e.host.stylesheet = scvs;
+                e.host.setAttribute('loaded', true);
+            }
+        });
     }
 
     //FETCH
