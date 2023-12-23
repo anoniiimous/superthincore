@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        TinyScript
-// @version     0.0.5
+// @version     0.0.7
 // @description A TinyChat Launcher improving moderation, enabling bots, and sharing themes in a compact userscript.
 // @author      thebanon
 // @license     Copyright (C) thebanon
@@ -144,7 +144,8 @@ window.APP.view.room = (params) => {
         var host = "https://" + user + ".github.io";
         var path = "/" + repo + "/files/theme" + (theme ? "/" + theme : "");
         var file = "/" + name + ".css";
-        var href = 0 < 1 ? host + path + file : "https://tinychat.local/files/theme/modern" + file;
+        var theme = "modern";
+        var href = is.local() ? "https://tinychat.local/files/theme/" + theme + file : host + path + file;
         try {
             var css = await request("https://tinychat.local/files/theme/modern/" + file, {
                 cache: "reload",
@@ -285,7 +286,9 @@ window.API.server.recv = {
         var host = "https://" + user + ".github.io";
         var path = "/" + repo + "/files/theme" + (theme ? "/" + theme : "");
         var file = "/" + name + ".css";
-        window.vcs ? null : window.vcs = await request(host + path + file, {
+        var theme = "modern";
+        var href = is.local() ? "https://tinychat.local/files/theme/" + theme + file : host + path + file;
+        window.vcs ? null : window.vcs = await request(href, {
             cache: "reload"
         });
         var cams = window.DOM.videolist.querySelectorAll("tc-video-item");
@@ -349,6 +352,12 @@ window.API.server.send = {
     }
 };
 
+window.is = {};
+window.is.local = () => {
+    var bool = 0 < 1;
+    return bool;
+}
+
 (function() {
     "use strict";
 
@@ -404,7 +413,10 @@ async function addCSS() {
     var host = "https://" + user + ".github.io";
     var path = "/" + repo + "/files/theme" + (theme ? "/" + theme : "");
     var file = "/" + name + ".css";
-    var href = host + path + file;
+    var theme = "modern";
+    var href = is.local() ? "https://tinychat.local/files/theme/" + theme + file : host + path + file;
+    console.log(413, 'sCSS', href);
+
     window.scvs ? null : window.scvs = await request(href, {
         cache: "reload"
     });
