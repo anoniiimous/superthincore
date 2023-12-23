@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        TinyScript
-// @version     0.0.3
+// @version     0.0.4
 // @description A TinyChat Launcher improving moderation, enabling bots, and sharing themes in a compact userscript.
 // @author      thebanon
 // @license     Copyright (C) thebanon
@@ -16,6 +16,7 @@
 // @run-at      document-start
 // @namespace https://greasyfork.org/users/1236617
 // ==/UserScript==
+
 
 (function() {
     "use strict";
@@ -139,7 +140,7 @@
         document.body.querySelector("style").insertAdjacentHTML("beforeend", APP.css.main);
         Object.keys(obj).forEach(async function(name) {
             var fullname = "thebanon/tinyscript";
-            var theme = null;
+            var theme = "modern";
             var user = fullname.split("/")[0];
             var repo = fullname.split("/")[1];
             var paths = fullname.split("/").splice(2,fullname.split("/").length - 1);
@@ -147,11 +148,18 @@
             var host = "https://" + user + ".github.io";
             var path = "/" + repo + "/files/theme" + (theme ? "/" + theme : "");
             var file = "/" + name + ".css";
+            var href = 0 < 1 ? host + path + file : "https://tinychat.local/files/theme/modern" + file;
             try {
-                var res = await request(host + path + file, {
-                    cache: "reload"
+                var css = await request("https://tinychat.local/files/theme/modern/" + file, {
+                    cache: "reload",
+                    mode: "cors"
                 });
-                console.log(151, { name, res, len: res.length });
+                console.log(151, 'insert.css', { css });
+                var res = await request(href, {
+                    cache: "reload",
+                    mode: "cors"
+                });
+                console.log(151, 'insert.css', { css, name, res, len: res.length });
                 if(res.length > 0) {
                     console.log(152, { name, res, len: res.length });
                     if(name === "body") {
@@ -176,7 +184,8 @@
                         el.stylesheet = res;
                     }
                 }
-            } catch(e) {
+            }
+            catch(e) {
                 console.log(151, { e });
             }
         });
@@ -193,6 +202,7 @@
         }).observe(MainElement.querySelector("#modal"), {
             childList: true
         });
+
         document.body.onclick = () => {
             var set = MainElement.querySelector("#modal #settings");
             if(set) {
