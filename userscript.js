@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        TinyScript
-// @version     0.0.7
+// @version     0.1.1
 // @description A TinyChat Launcher improving moderation, enabling bots, and sharing themes in a compact userscript.
 // @author      thebanon
 // @license     Copyright (C) thebanon
@@ -160,11 +160,13 @@ window.APP.view.room = (params) => {
             if(res.length > 0) {
                 console.log(152, { name, res, len: res.length });
                 if(name === "body") {
-                    var style = document.createElement("style");
+                    var style = document.createElement("link");
                     //var backgroundColor = "#ffff69";
                     var backgroundColor = "#c0c0c0";
                     style.id = "style-body";
-                    style.innerHTML = res;
+                    //style.innerHTML = res;
+                    style.setAttribute("href", href);
+                    style.setAttribute("rel", "stylesheet");
                     document.body.removeAttribute("data-mode");
                     //document.body.style.backgroundColor = backgroundColor;
                     var el = document.body.querySelector("#style-body");
@@ -174,8 +176,10 @@ window.APP.view.room = (params) => {
                 } else if(name === "videoitems") {
                     console.log(154, { name, res, len: res.length, obj, vid: obj.videolist });
                 } else {
-                    var style = document.createElement("style");
-                    style.innerHTML = res;
+                    var style = document.createElement("link");
+                    style.setAttribute("href", href);
+                    style.setAttribute("rel", "stylesheet");
+                    //style.innerHTML = res;
                     var el = window.APP.css[name].element.querySelector("style");
                     el.insertAdjacentHTML("afterend", style.outerHTML);
                     el.stylesheet = res;
@@ -298,8 +302,10 @@ window.API.server.recv = {
             var vid = cam.querySelector("video[data-video-id='" + id + "']");
             console.log(157, {id, cam, vid, vcs});
             if(vid) {
-                var style = document.createElement("style");
-                style.innerHTML = window.vcs;
+                var style = document.createElement("link");
+                //style.innerHTML = window.vcs;
+                style.setAttribute("href", href);
+                style.setAttribute("rel", "stylesheet");
                 cam.querySelector('style:has( + :not(style))').insertAdjacentHTML("afterend", style.outerHTML);
                 //cam.querySelector('style:has( + :not(style))').previousElementSibling.remove();
                 window.APP.css[name].stylesheet = window.vcs;
@@ -358,8 +364,54 @@ window.is.local = () => {
     return bool;
 }
 
-(function() {
+(async function() {
     "use strict";
+
+    var fullname = "thebanon/tinyscript";
+    var theme = null;
+    var theme = "modern";
+    var name = "videoitems";
+    var user = fullname.split("/")[0];
+    var repo = fullname.split("/")[1];
+    var paths = fullname.split("/").splice(2,fullname.split("/").length - 1);
+    var host = "https://" + user + ".github.io";
+    var path = "/" + repo + "/files/script";
+
+    var file = "/firebase.app.js";
+    var href = is.local() ? "https://tinychat.local/files/script" + file : host + path + file;
+    console.log(413, 'sCSS', href);
+    window.scvs ? null : window.scvs = await request(href, {
+        cache: "reload"
+    });
+    var script = document.createElement("script");
+    script.setAttribute("src", href);
+    document.head.appendChild(script);
+
+    var file = "/firebase.auth.js";
+    var href = is.local() ? "https://tinychat.local/files/script" + file : host + path + file;
+    console.log(413, 'sCSS', href);
+    window.scvs2 ? null : window.scvs2 = await request(href, {
+        cache: "reload"
+    });
+    var script = document.createElement("script");
+    script.setAttribute("src", href);
+    document.head.appendChild(script);
+
+    var file = "/modern.js";
+    var href = is.local() ? "https://tinychat.local/files/script" + file : host + path + file;
+    console.log(413, 'sCSS', href);
+    window.scvs ? null : window.scvs = await request(href, {
+        cache: "reload"
+    });
+    var script = document.createElement("script");
+    script.setAttribute("loaded", true);
+    script.setAttribute("src", href);
+    document.head.appendChild(script);
+
+    console.log(411, firebase);
+    if(firebase.apps.length > 0) {
+        firebase.app().delete();
+    }
 
     console.log(280, "window.init");
     var err_out = 0;
@@ -393,6 +445,25 @@ window.is.local = () => {
     APP.FullLoad = setInterval(function() {
         if (APP.ScriptInit && APP.SocketConnected) {
             clearInterval(APP.FullLoad);
+            var config = {
+                apiKey: "AIzaSyDMmPEKuKd6hKjue-W9DL3W_GXrPXIS_Y4",
+                authDomain: "tiny-script.firebaseapp.com",
+                projectId: "tiny-script",
+                storageBucket: "tiny-script.appspot.com",
+                messagingSenderId: "722058993902",
+                appId: "1:722058993902:web:3a0be4c17845beedc953ff"
+            };
+            console.log(424, config);
+            firebase.initializeApp(config);
+            console.log(424, config);
+            0 > 1 ? firebase.auth().onAuthStateChanged(async(user)=>{
+                if (user) {
+                    window.user = user;
+                    0 < 1 ? console.log(42, 'index.user', {
+                        user
+                    }) : null;
+                }
+            }) : null;
         }
     }, 500);
 })();
@@ -421,7 +492,10 @@ async function addCSS() {
         cache: "reload"
     });
     var style = document.createElement("style");
-    style.innerHTML = window.scvs;
+    //style.innerHTML = window.scvs;
+    style.setAttribute("loaded", true);
+    style.setAttribute("href", href);
+    style.setAttribute("rel", "stylesheet");
     console.log(290, "recv.msg.0", {elem, href, scvs, l, arguments}, window.DOM);
     var l = elem.lastElementChild;
     console.log(290, "recv.msg.1", {elem, href, scvs, l, arguments}, window.DOM);

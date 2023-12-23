@@ -27,7 +27,19 @@
 }
 
 #sidemenu {
-  position:fixed;height:100%;min-width:270px;max-width:270px;top:0;left:82px;padding-bottom:80px;box-sizing:border-box;font-family:'Open Sans', sans-serif;background-color:transparent;z-index:2;transition:left .8s;
+  position:fixed;
+  height:100%;
+  min-width:270px;
+  max-width:270px;
+  top:0;
+  left:82px;
+  padding-bottom:80px;
+  box-sizing:border-box;
+  font-family:'Open Sans', sans-serif;
+  background-color:transparent;
+  background-color: #4a40a1;
+  z-index:2;
+  transition:left .8s;
 }
 
 #sidemenu-wider {
@@ -195,4 +207,3 @@
 #sidemenu.full-screen > #top-buttons-wrapper {
   display:none;
 }
-

@@ -84,6 +84,7 @@
 
 #chat-wrapper[data-mode="dark"] {
     background-color: transparent;
+    background-color: #4a40a1;
 }
 
 #chat-wider.active + #chat-wrapper {
@@ -99,10 +100,10 @@
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    top: 20px;
-    left: 20px;
-    right: 20px;
-    bottom: 19px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
 }
 
 #chat-instant {

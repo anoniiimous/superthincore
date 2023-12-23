@@ -6,6 +6,7 @@
 
 #room-header {
     display: flex;
+    display: none;
     flex-direction: row;
     align-items: stretch;
     min-height: 140px;

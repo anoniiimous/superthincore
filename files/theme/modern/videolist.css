@@ -52,6 +52,7 @@
 
 #videolist[data-mode="dark"] {
     background-color: transparent;
+    background-color: #5f53cb;
 }
 
 #lurker {
@@ -157,6 +158,8 @@
 
 #videos-header > span > svg * {
     pointer-events: none;
+    fill: #fff;
+    stroke: #fff;
 }
 
 #videos-header-sound {

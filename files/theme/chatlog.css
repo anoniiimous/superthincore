@@ -223,6 +223,7 @@
 
 #input:before {
     opacity: 0;
+    padding-top: 0;
 }
 
 #input > textarea {

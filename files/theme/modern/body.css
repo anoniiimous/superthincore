@@ -1,11 +1,22 @@
 body {
     overflow: hidden;
-    background: #32cd32;
-    color: #000;
+    background: #32c;
+    color: #32c;
 }
 
 #nav-static-wrapper {
     background: transparent;
+}
+
+#nav-static {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.nav-menu {
+    padding-left: 0;
+    padding-right: 0;
 }
 
 #chat-wrapper[data-mode="dark"] {
@@ -14,4 +25,19 @@ body {
 
 #room-header[data-mode="dark"] {
     background: transparent;    
+}
+
+#nav-static .header-button {
+    bottom: unset;
+    height: 60px;
+    left: 0;
+    margin-left: auto;
+    margin-right: auto;
+    right: 0;
+    position: relative;
+    width: 60px;
+}
+
+.header-button.header-media {
+    margin-top: auto;
 }
