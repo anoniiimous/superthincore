@@ -16,6 +16,23 @@ body > aside::-webkit-scrollbar {
     width: 0px;
 }
 
+column, flex, row, section {
+    display: flex;
+    /* flex: 1; */
+}
+
+column {
+    flex-direction: column;
+}
+
+body[uid] [auth="false"] {
+    display: none;
+}
+
+body:not([uid]) [auth="true"] {
+    display: none;
+}
+
 @media {
     aside:has([modal="modal-config"]) {
         align-items: center;
@@ -24,6 +41,7 @@ body > aside::-webkit-scrollbar {
         background-color: rgba(0,0,0,0.5);
         display: flex;
         flex-wrap: wrap;
+        font-size: 16px;
         margin: auto;
         width: 100%;
     }
@@ -41,9 +59,9 @@ body > aside::-webkit-scrollbar {
 
 @media {
     [modal="modal-config"] {
-        background: rgba(255,255,255,0.255);
         border-radius: 10px;
         box-shadow: 0 0 10pc -9px;
+        color: #000;
         display: flex;
         flex-wrap: wrap;
         margin: 60px auto;
@@ -52,6 +70,10 @@ body > aside::-webkit-scrollbar {
         padding: 0 0px 0px;
         width: 960px;
         max-width: calc(100% - 40px);
+    }
+    
+    body[uid] blocks [modal="modal-config"] {
+        background: rgba(255,255,255,0.255);
     }
 
     @media (max-width: 540px) {
