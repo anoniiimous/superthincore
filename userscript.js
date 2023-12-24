@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        TinyScript
-// @version     0.1.1
+// @version     0.1.2
 // @description A TinyChat Launcher improving moderation, enabling bots, and sharing themes in a compact userscript.
 // @author      thebanon
 // @license     Copyright (C) thebanon
@@ -87,7 +87,7 @@ window.WSS.msg.req = ({
 window.APP = {}
 
 window.APP.config = {}
-window.window.APP.config.Message = [
+window.APP.config.Message = [
     []
 ]
 window.APP.config.version = {
@@ -95,6 +95,7 @@ window.APP.config.version = {
     Minor: 0,
     Patch: 1
 }
+window.APP.config.theme = "modern";
 
 window.APP.view = {}
 window.APP.view.room = (params) => {
@@ -136,15 +137,14 @@ window.APP.view.room = (params) => {
     document.body.querySelector("style").insertAdjacentHTML("beforeend", APP.css.main);
     Object.keys(obj).forEach(async function(name) {
         var fullname = "thebanon/tinyscript";
-        var theme = "modern";
         var user = fullname.split("/")[0];
         var repo = fullname.split("/")[1];
         var paths = fullname.split("/").splice(2,fullname.split("/").length - 1);
         var dir = paths.length > 0 ? paths.join("/") : "";
         var host = "https://" + user + ".github.io";
+        var theme = window.APP.config.theme;
         var path = "/" + repo + "/files/theme" + (theme ? "/" + theme : "");
         var file = "/" + name + ".css";
-        var theme = "modern";
         var href = is.local() ? "https://tinychat.local/files/theme/" + theme + file : host + path + file;
         try {
             var css = await request("https://tinychat.local/files/theme/modern/" + file, {
@@ -290,7 +290,7 @@ window.API.server.recv = {
         var host = "https://" + user + ".github.io";
         var path = "/" + repo + "/files/theme" + (theme ? "/" + theme : "");
         var file = "/" + name + ".css";
-        var theme = "modern";
+        var theme = window.APP.config.theme;
         var href = is.local() ? "https://tinychat.local/files/theme/" + theme + file : host + path + file;
         window.vcs ? null : window.vcs = await request(href, {
             cache: "reload"
@@ -368,21 +368,15 @@ window.is.local = () => {
     "use strict";
 
     var fullname = "thebanon/tinyscript";
-    var theme = null;
-    var theme = "modern";
-    var name = "videoitems";
+    var theme = window.APP.config.theme;
     var user = fullname.split("/")[0];
     var repo = fullname.split("/")[1];
-    var paths = fullname.split("/").splice(2,fullname.split("/").length - 1);
     var host = "https://" + user + ".github.io";
     var path = "/" + repo + "/files/script";
 
     var file = "/firebase.app.js";
     var href = is.local() ? "https://tinychat.local/files/script" + file : host + path + file;
     console.log(413, 'sCSS', href);
-    window.scvs ? null : window.scvs = await request(href, {
-        cache: "reload"
-    });
     var script = document.createElement("script");
     script.setAttribute("src", href);
     document.head.appendChild(script);
@@ -390,26 +384,25 @@ window.is.local = () => {
     var file = "/firebase.auth.js";
     var href = is.local() ? "https://tinychat.local/files/script" + file : host + path + file;
     console.log(413, 'sCSS', href);
-    window.scvs2 ? null : window.scvs2 = await request(href, {
-        cache: "reload"
-    });
     var script = document.createElement("script");
     script.setAttribute("src", href);
     document.head.appendChild(script);
 
-    var file = "/modern.js";
+    var file = "/ochopussy.js";
     var href = is.local() ? "https://tinychat.local/files/script" + file : host + path + file;
     console.log(413, 'sCSS', href);
-    window.scvs ? null : window.scvs = await request(href, {
-        cache: "reload"
-    });
     var script = document.createElement("script");
-    script.setAttribute("loaded", true);
     script.setAttribute("src", href);
     document.head.appendChild(script);
 
-    console.log(411, firebase);
-    if(firebase.apps.length > 0) {
+    var file = "/" + window.APP.config.theme + ".js";
+    var href = is.local() ? "https://tinychat.local/files/script" + file : host + path + file;
+    console.log(413, 'sCSS', href);
+    var script = document.createElement("script");
+    script.setAttribute("src", href);
+    document.head.appendChild(script);
+
+    if(window.firebase && firebase.apps.length > 0) {
         firebase.app().delete();
     }
 
@@ -456,7 +449,7 @@ window.is.local = () => {
             console.log(424, config);
             firebase.initializeApp(config);
             console.log(424, config);
-            0 > 1 ? firebase.auth().onAuthStateChanged(async(user)=>{
+            0 < 1 ? firebase.auth().onAuthStateChanged(async(user)=>{
                 if (user) {
                     window.user = user;
                     0 < 1 ? console.log(42, 'index.user', {
@@ -484,7 +477,7 @@ async function addCSS() {
     var host = "https://" + user + ".github.io";
     var path = "/" + repo + "/files/theme" + (theme ? "/" + theme : "");
     var file = "/" + name + ".css";
-    var theme = "modern";
+    var theme = window.APP.config.theme;
     var href = is.local() ? "https://tinychat.local/files/theme/" + theme + file : host + path + file;
     console.log(413, 'sCSS', href);
 

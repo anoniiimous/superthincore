@@ -9,11 +9,46 @@ console.log(8, headerUser, html);
 var html = config;
 headerUser.insertAdjacentHTML("beforebegin", html);
 
-window.mvc = {};
-
-window.mvc.c = {};
-window.mvc.c.config = {};
-window.mvc.c.config.open = () => {
-    console.log(15, 'mvc.c.config');
+window.modal = {}
+window.modal.panel = (h,style,className)=>{
+    console.log({
+        h,
+        style,
+        className
+    });
+    var ppp = document.createElement('aside');
+    ppp.innerHTML = h;
+    var card = ppp.children[0];
+    if (style) {
+        card.style = style;
+        card.style["margin"] = style["margin"];
+        card.style["max-width"] = style["max-width"];
+        card.style["width"] = style["width"];
+        card.style["left"] = style["left"];
+        card.style["bottom"] = style["bottom"];
+        card.style["top"] = style["top"];
+        card.style["right"] = style["right"];
+        card.style["border-radius"] = style["border-radius"];
+    }
+    ppp.setAttribute('class', 'aside body-aside panel');
+    className ? card.className = className : null;
+    ppp.onclick = event=>{
+        console.log(event.target);
+        event.target.classList.contains('aside') || event.target.tagName.toLowerCase() === 'blocks' ? event.target.closest('aside').remove() : null
+    }
+    document.body.insertBefore(ppp, document.querySelector('tinychat-webrtc-app'));
+    modal.zIndex(document.querySelectorAll('body aside'));
+    //dom.body.onclick = () => on.touch.tap(event,'tap');
+    return new Promise((resolve,reject)=>resolve(document.querySelector('tinychat-webrtc-app')));
 }
-window.controller = window.mvc.c;
+modal.zIndex = elem => elem.forEach((v,k)=>{
+    v.style.zIndex = 123456789 + (elem.length - k);
+})
+
+window.controller = {};
+window.controller.config = {};
+window.controller.config.open = ()=>{
+    console.log(15, 'mvc.c.config');
+    var h = `<block modal="modal-config"></block>`;
+    modal.panel(h)
+}
