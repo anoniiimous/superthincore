@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        TinyScript
-// @version     0.1.2
+// @version     0.1.3
 // @description A TinyChat Launcher improving moderation, enabling bots, and sharing themes in a compact userscript.
 // @author      thebanon
 // @license     Copyright (C) thebanon
