@@ -32,7 +32,7 @@
 
 #chat-wider {
     position: absolute;
-    display: block;
+    display: none;
     height: 40px;
     width: 16px;
     top: 50%;
