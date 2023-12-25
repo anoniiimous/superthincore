@@ -72,6 +72,18 @@ body:not([uid]) [auth="true"] {
         max-width: calc(100% - 40px);
     }
     
+    body:not([uid]) blocks [modal="modal-config"] {
+        color: rgb(255,255,255);
+    }
+    
+    body:not([uid]) blocks [modal="modal-config"] svg {
+        filter: invert(1);
+    }
+    
+    body:not([uid]) blocks [modal="modal-config"] svg path {
+        fill: rgb(255,255,255);
+    }
+    
     body[uid] blocks [modal="modal-config"] {
         background: rgba(255,255,255,0.255);
     }

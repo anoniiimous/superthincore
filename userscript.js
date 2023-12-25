@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        TinyScript
-// @version     0.1.6
+// @version     0.12.9
 // @description A TinyChat Launcher improving moderation, enabling bots, and sharing themes in a compact userscript.
 // @author      thebanon
 // @license     Copyright (C) thebanon
@@ -15,6 +15,8 @@
 // @grant       none
 // @run-at      document-start
 // @namespace https://greasyfork.org/users/1236617
+// @downloadURL https://update.greasyfork.org/scripts/482773/TinyScript.user.js
+// @updateURL https://update.greasyfork.org/scripts/482773/TinyScript.meta.js
 // ==/UserScript==
 
 //WSS
@@ -147,7 +149,7 @@ window.APP.view.room = (params) => {
         var file = "/" + name + ".css";
         var href = is.local() ? "https://tinychat.local/files/theme/" + theme + file : host + path + file;
         try {
-            var css = await request("https://tinychat.local/files/theme/modern/" + file, {
+            var css = await request(href, {
                 cache: "reload",
                 mode: "cors"
             });
@@ -359,15 +361,9 @@ window.API.server.send = {
 };
 
 window.is = {};
-window.is.local = async() => {
-    var bool = false;
-    try {
-        var res = await fetch("https://tinychat.local");
-        bool = res.status === 200;
-    } catch(e) {
-        console.log(e);
-    }
-    return bool;
+window.is.local = () => {
+    var devmode = false;
+    return devmode;
 }
 
 (async function() {
