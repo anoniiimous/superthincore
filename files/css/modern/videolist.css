@@ -1,0 +1,552 @@
+#videolist * {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+}
+
+*:focus {
+    outline: none;
+}
+
+.on-white-scroll {
+    padding-left: 16px;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.on-white-scroll::-webkit-scrollbar {
+    position: absolute;
+    width: 15px;
+    cursor: pointer;
+}
+
+.on-white-scroll::-webkit-scrollbar-track {
+    background-color: #fff;
+}
+
+.on-white-scroll::-webkit-scrollbar-thumb {
+    border: 5px solid #fff;
+    border-radius: 6px/8px;
+    background-color: rgba(0, 0, 0, .2);
+}
+
+.on-white-scroll::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, .4);
+}
+
+#ytplayer {
+    pointer-events: auto;
+}
+
+:host, #videolist {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    height: 100%;
+    min-height: 250px;
+    width: 100%;
+    background-color: transparent;
+}
+
+#videolist[data-mode="dark"] {
+    background-color: transparent;
+    background-color: #5f53cb;
+}
+
+#lurker {
+    height: 0;
+    min-height: 0;
+    padding: 0 20px;
+    box-sizing: border-box;
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    line-height: 40px;
+    background-color: #f29e20;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    cursor: default;
+    transition: .2s;
+}
+
+#lurker > * {
+    vertical-align: middle;
+}
+
+#lurker > span {
+    display: inline-block;
+    margin: 0 14px 0 10px;
+    line-height: 24px;
+}
+
+#lurker > button {
+    display: inline-block;
+    height: 24px;
+    padding: 0 18px;
+    border: 1px solid #fff;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 24px;
+    background-color: transparent;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: .2s;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+#lurker > button:hover {
+    color: #f29e20;
+    background-color: #fff;
+}
+
+#videolist.lurker > #lurker {
+    height: 40px;
+    min-height: 40px;
+}
+
+#videos-header {
+    height: 50px;
+    min-height: 50px;
+    width: 100%;
+    top: 0;
+    left: 0;
+    font-size: 0;
+    background-color: transparent;
+    z-index: 1;
+    transition: .2s;
+}
+
+[data-mode="dark"] #videos-header {
+    background-color: transparent;
+}
+
+#videolist.hide-header > #videos-header {
+    height: 0;
+    min-height: 0;
+}
+
+#videos-header {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+}
+
+#videos-header > span.hidden {
+    display: none;
+}
+
+#videos-header > span {
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+    background-color: inherit;
+    text-align: center;
+    line-height: 50px;
+}
+
+#videos-header > span > svg {
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+#videos-header > span > svg * {
+    pointer-events: none;
+    fill: #fff;
+    stroke: #fff;
+}
+
+#videos-header-sound {
+    position: relative;
+}
+
+#videos-header-sound > svg > path ~ path {
+    display: none;
+}
+
+#videos-header-sound > svg {
+    position: relative;
+    padding: 7px 10px;
+    z-index: 1;
+}
+
+#videos-header-sound > svg.muted > path ~ path {
+    display: block;
+}
+
+#videos-header-mic > svg {
+    position: relative;
+    padding: 5px 10px;
+    z-index: 1;
+}
+
+#videos-header-mic > svg > rect {
+    opacity: 0;
+    visibility: hidden;
+    transition: .2s;
+}
+
+[data-mode="dark"] #videos-header-mic > svg > path + rect {
+    fill: #101314;
+}
+
+#videos-header-mic.muted > svg > rect {
+    opacity: 1;
+    visibility: visible;
+}
+
+.videos-header-volume {
+    position: absolute;
+    height: 128px;
+    width: 4px;
+    top: 2px;
+    left: 50%;
+    margin-left: -24px;
+    border-width: 50px 22px 22px;
+    border-style: solid;
+    border-color: #fff;
+    border-radius: 24px;
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, .09);
+    opacity: 0;
+    visibility: hidden;
+    transition: .2s;
+}
+
+[data-mode="dark"] .videos-header-volume {
+    border-color: #2e373a;
+}
+
+#videos-header > span > svg:hover + .videos-header-volume, #videos-header > span > .videos-header-volume:hover {
+    opacity: 1;
+    visibility: visible;
+}
+
+.videos-header-volume:before {
+    content: '';
+    position: absolute;
+    display: block;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    border-radius: 2px;
+    background-color: #e9eaea;
+}
+
+.videos-header-volume-level {
+    position: absolute;
+    display: block;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    border-radius: 2px;
+    background-color: #41b7ef;
+}
+
+.videos-header-volume-level > div {
+    position: absolute;
+    display: block;
+    height: 12px;
+    width: 12px;
+    top: -6px;
+    left: -4px;
+    border-radius: 100%;
+    background-color: #41b7ef;
+    cursor: pointer;
+    box-shadow: 0 0 0 0 #41b7ef;
+    transition: .2s;
+}
+
+.videos-header-volume-level > div:hover {
+    box-shadow: 0 0 0 3px #41b7ef;
+}
+
+#videos-header-snapshot > svg {
+    padding: 8px 7px 9px;
+}
+
+#videos-header-fullscreen > svg {
+    padding: 10px 8px;
+}
+
+#videos-header-fullscreen > svg + svg {
+    display: none;
+}
+
+@media screen and (max-width: 600px) {
+    .videos-header-volume {
+        top:auto;
+        bottom: 1px;
+        margin-left: -23px;
+        border-width: 21px 21px 40px;
+        box-shadow: 0 0 4px 0 rgba(0, 0, 0, .09);
+    }
+
+    #videos-header-mic > .videos-header-volume {
+        bottom: 11px;
+        margin-left: -17px;
+    }
+
+    #videolist.full-screen > #videos-header > span {
+        background-color: #202628;
+    }
+}
+
+#videos-content {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    min-height: 200px;
+    min-width: 200px;
+}
+
+#videos {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    top: 20px;
+    right: 25px;
+    bottom: 20px;
+    left: 25px;
+    box-sizing: border-box;
+    font-size: 0;
+}
+
+.videos-items {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.videos-items.hidden {
+    display: none;
+}
+
+#videos.row > .videos-items {
+    width: 50%;
+}
+
+#videos.row > .videos-items + .videos-items {
+    left: 50%;
+}
+
+#videos.column {
+    flex-direction: column;
+}
+
+#videos.column > .videos-items {
+    height: 50%;
+}
+
+#videos.row.featured-2 > .videos-items {
+    width: 65%;
+}
+
+#videos.row.featured-2 > .videos-items + .videos-items {
+    width: 35%;
+}
+
+#videos.column.featured-2 > .videos-items {
+    height: 70%;
+}
+
+#videos.column.featured-2 > .videos-items + .videos-items {
+    height: 30%;
+}
+
+#videos.row.featured-3 > .videos-items {
+    width: 70%;
+}
+
+#videos.row.featured-3 > .videos-items + .videos-items {
+    width: 30%;
+}
+
+#videos.column.featured-3 > .videos-items {
+    height: 70%;
+}
+
+#videos.column.featured-3 > .videos-items + .videos-items {
+    height: 30%;
+}
+
+#youtube.video.hidden {
+    display: none;
+}
+
+.video {
+    position: relative;
+    width: 100%;
+    padding: 5px;
+    box-sizing: border-box;
+    font-size: 0;
+    overflow: hidden;
+}
+
+.video > div {
+    position: relative;
+    overflow: hidden;
+}
+
+#youtube.video > div {
+    overflow: initial;
+    margin-bottom: 53px;
+}
+
+#youtube.video {
+    min-height: 210px;
+    min-width: 277px;
+}
+
+#youtube.video > div:before {
+    content: '';
+    display: block;
+    width: 100%;
+    padding-bottom: 75%;
+}
+
+.video:after {
+    content: '';
+    position: absolute;
+    display: block;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    border-radius: 10px;
+    box-sizing: border-box;
+    pointer-events: none;
+}
+
+.video > div > div {
+    position: relative;
+    width: 100%;
+}
+
+.video > div > video, .video > div > tc-videoitem, .video > div > iframe {
+    position: absolute;
+    height: 100%;
+    bottom: 0;
+    left: 0;
+}
+
+.video > div > iframe {
+    width: 100%;
+}
+
+.video > div.ratio-16-9 > video, .video > div.ratio-16-9 > tc-videoitem, .video > div.ratio-16-9 > iframe {
+    left: -16.66%;
+}
+
+.video > div.ratio-8-5 > video, .video > div.ratio-8-5 > tc-videoitem, .video > div.ratio-8-5 > iframe {
+    left: -10%;
+}
+
+.video > div.ratio-3-2 > video, .video > div.ratio-3-2 > tc-videoitem, .video > div.ratio-3-2 > iframe {
+    left: -6.25%;
+}
+
+.video > div > .overlay {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    box-shadow: inset 0 0 0 0 rgba(0, 0, 0, .5);
+    transition: .2s;
+}
+
+.video:hover > div > .overlay {
+    box-shadow: inset 0 0 100px 0 rgba(0, 0, 0, .5);
+}
+
+#youtube.video:hover > div > .overlay {
+    box-shadow: inset 0 0 0 0 rgba(0, 0, 0, .5);
+}
+
+#youtube.video > div > .overlay {
+    position: absolute;
+    height: 30px;
+    width: 100%;
+    top: 100%;
+    left: 0;
+    border-radius: 0 0 4px 4px;
+    background-color: #2e373a;
+}
+
+#youtube-overlay {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    opacity: .5;
+}
+
+.icon-visibility, .icon-resize, .icon-report, .icon-close {
+    position: absolute;
+    height: 22px;
+    width: 22px;
+    top: -22px;
+    padding: 0;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    opacity: .9;
+    transition: .2s;
+}
+
+.icon-visibility {
+    left: -22px;
+}
+
+.icon-resize {
+    left: 50%;
+    margin-left: -11px;
+}
+
+.icon-report, .icon-close {
+    right: -22px;
+}
+
+.icon-visibility:hover, .icon-resize:hover, .icon-report:hover, .icon-close:hover {
+    opacity: 1;
+}
+
+.video:hover > div > .overlay > .icon-visibility, .video:hover > div > .overlay > .icon-resize, .video:hover > div > .overlay > .icon-report, .video:hover > div > .overlay > .icon-close {
+    top: 12px;
+    transition: top .2s ease .2s, left .2s ease .2s, right .2s ease .2s, opacity .2s;
+}
+
+.video:hover > div > .overlay > .icon-visibility {
+    left: 14px;
+}
+
+#youtube.video > div > .overlay > .icon-visibility {
+    top: 4px;
+    left: 16px;
+}
+
+#youtube.video > div > .overlay > .icon-close + .icon-visibility {
+    right: 16px;
+}
+
+.video:hover > div > .overlay > .icon-report…

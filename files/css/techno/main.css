@@ -1,0 +1,48 @@
+#room {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    max-width: inherit;
+    padding: 0 0 0 270px;
+    transition: .8s;
+}
+
+#room.wider {
+    padding-left: 0;
+}
+
+#room-content {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    height: 100%;
+    min-height: 100px;
+    text-align: left;
+}
+
+@media screen and (max-width: 1200px) {
+    #room-content {
+        flex-direction:column;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    :host > #room {
+        padding-left:0;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    #room-content {
+        padding-top:54px;
+    }
+
+    #room.full-screen > #room-content {
+        padding-top: 0;
+    }
+}
+
+#room.full-screen {
+    padding-left: 0;
+}

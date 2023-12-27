@@ -63,81 +63,11 @@ window.github.oauth.user = async(target)=>{
     return user
 }
 
-github.raw = {};
-github.raw.blob = async(params,settings)=>{
-    settings ? null : settings = {};
-    return new Promise((resolve,reject)=>{
-        fetch("https://api.github.com/repos/" + params.owner + "/" + params.repo + "/contents" + params.resource, {
-            cache: "reload",
-            headers: {
-                Accept: "application/vnd.github.raw",
-                Authorization: "token " + localStorage.githubAccessToken
-            }
-        }).then(async(response)=>{
-            if (response.status === 404) {
-                var res = await response.json();
-                var json = {
-                    json: res,
-                    error: new Error(response.status)
-                }
-                throw json;
-            } else {
-                return response.blob()
-            }
-        }
-        ).then((blob)=>{
-            resolve(URL.createObjectURL(blob));
-        }
-        ).catch((e)=>{
-            reject(e.json)
-        }
-        );
-    }
-    );
-}
-github.raw.file = async(params)=>{
-    var url = "https://api.github.com/repos/" + params.owner + "/" + params.repo + "/contents/" + params.resource;
-    var settings = {
-        cache: "no-store",
-        headers: {
-            'If-None-Match': ''
-        }
-    };
-    const accessToken = localStorage.githubAccessToken;
-    if (accessToken) {
-        settings.headers.Accept = "application/vnd.github.raw",
-        settings.headers.Authorization = "token " + accessToken
-    }
-    //console.log(url, settings);
-    return new Promise((resolve,reject)=>{
-        fetch(url, settings).then(async(response)=>{
-            if (response.status === 404) {
-                var res = await response.json();
-                var json = {
-                    json: res,
-                    error: new Error(response.status)
-                }
-                throw json;
-            } else {
-                return response.text()
-            }
-        }
-        ).then((response)=>{
-            resolve(response);
-        }
-        ).catch((e)=>{
-            reject(e.json)
-        }
-        );
-    }
-    );
-}
-
 window.github.repos = {};
 window.github.repos.contents = async(params,settings)=>{
     settings ? null : settings = {};
     return new Promise(function(resolve, reject) {
-        const url = github.config.endpoint + "/repos/" + params.owner + "/" + params.repo + "/contents" + params.resource;
+        const url = github.endpoint + "/repos/" + params.owner + "/" + params.repo + "/contents" + params.resource;
         const a = data=>{
             resolve(data);
         }
