@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        TinyScript
-// @version     0.22.0
+// @version     0.23.0
 // @description A TinyChat Launcher improving moderation, enabling bots, and sharing themes in a compact userscript.
 // @author      thebanon
 // @license     Copyright (C) thebanon
@@ -536,19 +536,31 @@ window.MVC = {
                                 contents
                             }) : null;
                         } catch (e) {
+                            var fullname = "thebanon/tinyscript";
+                            var theme = window.APP.config.theme;
+                            var user = fullname.split("/")[0];
+                            var repo = fullname.split("/")[1];
+                            var host = "https://" + user + ".github.io";
+                            var path = "/" + repo + "/files/script";
+                            var file = "resolve.js";
                             console.log(517, 'Welcome to ' + path, e);
-                            //alert("Welcome to " + path);
-                            var href = is.local() ? "https://tinychat.local/files/script" + file : host + path + file;
+                            var href = is.local() ? "https://tinychat.local/files/script/" + file : host + path + file;
                             console.log(413, 'sCSS', href);
-                            var script = document.createElement("script");
-                            script.setAttribute("src", href);
-                            document.head.appendChild(script);
-                            document.head.lastElementChild.addEventListener('load', function(e) {
-                                console.log('Loaded: ' + file, {
-                                    e
-                                });
-                                window.scriptsLoaded.push(file)
-                            });
+                            var resolving = 0 > 1;
+                            if(resolving) {
+                                var script = document.createElement("script");
+                                script.setAttribute("src", href);
+                                document.head.appendChild(script);
+                                //script = document.lastElementChild;
+                                script.addEventListener('load', function(e) {
+                                    console.log('Loaded: ' + file, {
+                                        e
+                                    });
+                                    console.log(558, "Welcome to " + path);
+                                })
+                            } else {
+                                console.log(561, "Welcome to " + (paths[1] ? paths[1] : paths[0]));
+                            }
                         }
                     }
                 } else {
