@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        TinyScript
-// @version     0.2.0
+// @version     0.22.0
 // @description A TinyChat Launcher improving moderation, enabling bots, and sharing themes in a compact userscript.
 // @author      thebanon
 // @license     Copyright (C) thebanon
@@ -99,6 +99,11 @@ window.APP.config.version = {
 }
 window.APP.config.theme = "modern";
 
+window.APP.route = {};
+window.APP.route.r = () => {
+    return window.location.pathname.split('/').filter(o => o.length > 0);
+}
+
 window.APP.view = {}
 window.APP.view.room = (params) => {
     console.log("TinyScript::APP.VIEW.ROOM", params);
@@ -175,9 +180,11 @@ window.APP.view.room = (params) => {
                     el ? el.replaceWith(style) : document.body.insertAdjacentHTML('afterbegin', style.outerHTML);
                     var el = document.getElementById(style.id);
                     el.stylesheet = res;
-                } else if(name === "videoitems") {
+                }
+                else if(name === "videoitems") {
                     console.log(154, { name, res, len: res.length, obj, vid: obj.videolist });
-                } else {
+                }
+                else {
                     var style = document.createElement("link");
                     style.setAttribute("href", href);
                     style.setAttribute("rel", "stylesheet");
@@ -284,15 +291,14 @@ window.API.server.recv = {
         console.log(232, 'stream_connected', arguments, arguments[0]);
         var id = arguments[0].handle;
         var fullname = "thebanon/tinyscript";
-        var theme = null;
         var name = "videoitems";
         var user = fullname.split("/")[0];
         var repo = fullname.split("/")[1];
         var paths = fullname.split("/").splice(2,fullname.split("/").length - 1);
         var host = "https://" + user + ".github.io";
+        var theme = window.APP.config.theme;
         var path = "/" + repo + "/files/theme" + (theme ? "/" + theme : "");
         var file = "/" + name + ".css";
-        var theme = window.APP.config.theme;
         var href = is.local() ? "https://tinychat.local/files/theme/" + theme + file : host + path + file;
         window.vcs ? null : window.vcs = await request(href, {
             cache: "reload"
@@ -362,9 +368,16 @@ window.API.server.send = {
 
 window.is = {};
 window.is.local = () => {
-    var devmode = false;
+    var devmode = true;
     return devmode;
 }
+
+//MVC
+window.MVC = {
+    m: {},
+    v: {},
+    c: {}
+};
 
 (async function() {
     "use strict";
@@ -375,34 +388,26 @@ window.is.local = () => {
     var repo = fullname.split("/")[1];
     var host = "https://" + user + ".github.io";
     var path = "/" + repo + "/files/script";
-
-    var file = "/firebase.app.js";
-    var href = is.local() ? "https://tinychat.local/files/script" + file : host + path + file;
-    console.log(413, 'sCSS', href);
-    var script = document.createElement("script");
-    script.setAttribute("src", href);
-    document.head.appendChild(script);
-
-    var file = "/firebase.auth.js";
-    var href = is.local() ? "https://tinychat.local/files/script" + file : host + path + file;
-    console.log(413, 'sCSS', href);
-    var script = document.createElement("script");
-    script.setAttribute("src", href);
-    document.head.appendChild(script);
-
-    var file = "/ochopussy.js";
-    var href = is.local() ? "https://tinychat.local/files/script" + file : host + path + file;
-    console.log(413, 'sCSS', href);
-    var script = document.createElement("script");
-    script.setAttribute("src", href);
-    document.head.appendChild(script);
-
-    var file = "/" + window.APP.config.theme + ".js";
-    var href = is.local() ? "https://tinychat.local/files/script" + file : host + path + file;
-    console.log(413, 'sCSS', href);
-    var script = document.createElement("script");
-    script.setAttribute("src", href);
-    document.head.appendChild(script);
+    var scripts = [
+        "/firebase.app.js",
+        "/firebase.auth.js",
+        "/ochopussy.js",
+         "/" + window.APP.config.theme + ".js"
+    ];
+    window.scriptsLoaded = [];
+    scripts.forEach((file) => {
+        var href = is.local() ? "https://tinychat.local/files/script" + file : host + path + file;
+        console.log(413, 'sCSS', href);
+        var script = document.createElement("script");
+        script.setAttribute("src", href);
+        document.head.appendChild(script);
+        document.head.lastElementChild.addEventListener('load', function(e) {
+            console.log('Loaded: ' + file, {
+                e
+            });
+            window.scriptsLoaded.push(file)
+        });
+    });
 
     if(window.firebase && firebase.apps.length > 0) {
         firebase.app().delete();
@@ -417,7 +422,8 @@ window.is.local = () => {
             if (twa.shadowRoot) {
                 APP.view.room()
             }
-        } else {
+        }
+        else {
             err_out++;
         }
         if (err_out == 50) {
@@ -437,8 +443,8 @@ window.is.local = () => {
         });
     }
 
-    APP.FullLoad = setInterval(function() {
-        if (APP.ScriptInit && APP.SocketConnected) {
+    APP.FullLoad = setInterval(async function() {
+        if (APP.ScriptInit && APP.SocketConnected && window.scriptsLoaded.length === scripts.length && window.firebase && window.firebase.app && window.firebase.auth) {
             clearInterval(APP.FullLoad);
             var config = {
                 apiKey: "AIzaSyDMmPEKuKd6hKjue-W9DL3W_GXrPXIS_Y4",
@@ -452,15 +458,75 @@ window.is.local = () => {
             firebase.initializeApp(config);
             console.log(424, config);
             0 < 1 ? firebase.auth().onAuthStateChanged(async(user)=>{
+                console.log(469, 'firebase.auth', {
+                    user
+                });
                 if (user) {
                     window.user = user;
-                    0 < 1 ? console.log(42, 'index.user', {
-                        user
+                    var paths = window.location.pathname.split('/').filter(o => o.length > 0);
+                    var path = paths.length === 1 ? paths[0] : null;
+                    var path = paths.length === 2 && paths[0] === "room" ? paths[1] : null;
+                    var repo = path + "." + window.location.hostname;
+                    var obj = {
+                        owner: localStorage.user,
+                        repo: repo,
+                        resource: "config.json"
+                    };
+                    0 < 1 ? console.log(466, 'index.user', {
+                        obj,
+                        user,
+                        paths,
+                        repo
                     }) : null;
-                } else {
+                    try {
+                        try {
+                            0 < 1 ? console.log(499, 'github.repos.contents', {
+                                obj,
+                                user
+                            }) : null;
+                            var contents = await github.repos.contents(obj, {
+                                method: "POST"
+                            });
+                        } catch(e) {
+                            console.log(499, e);
+                            var exists = await github.repos.contents(obj, {
+                                method: "POST"
+                            });
+                            0 < 1 ? console.log(486, 'github.repos.contents', {
+                                exists,
+                                obj
+                            }) : null;
+                        }
+                    } catch(e) {
+                        try {
+                            console.log(487, {
+                                e,
+                                repo
+                            });
+                            var contents = await github.user.repos(null, {
+                                body: JSON.stringify({
+                                    name: repo,
+                                    private: true
+                                }),
+                                method: "POST"
+                            });
+                            0 < 1 ? console.log(494, 'github.user.repos', {
+                                contents
+                            }) : null;
+                        } catch(e) {
+                            console.log(e);
+                            //alert("Welcome to " + path);
+                        }
+                    }
+                }
+                else {
                     window.user = null;
+                    localStorage.removeItem('user');
                 }
             }) : null;
+            //window.model ? window.model = MVC.m : null;
+            //window.view ? window.view = MVC.v : null;
+            //window.controller ? window.controller = MVC.c : null;
         }
     }, 500);
 })();
@@ -472,7 +538,7 @@ async function addCSS() {
     }
     var MainElement = obj.main;
     var fullname = "thebanon/tinyscript";
-    var theme = null;
+    var theme = window.APP.config.theme;
     var elem = MainElement.querySelector("tc-chatlog").shadowRoot;
     var name = "messages";
     var user = fullname.split("/")[0];
@@ -481,7 +547,6 @@ async function addCSS() {
     var host = "https://" + user + ".github.io";
     var path = "/" + repo + "/files/theme" + (theme ? "/" + theme : "");
     var file = "/" + name + ".css";
-    var theme = window.APP.config.theme;
     var href = is.local() ? "https://tinychat.local/files/theme/" + theme + file : host + path + file;
     console.log(413, 'sCSS', href);
 

@@ -137,7 +137,7 @@ window.github.repos = {};
 window.github.repos.contents = async(params,settings)=>{
     settings ? null : settings = {};
     return new Promise(function(resolve, reject) {
-        const url = github.config.endpoint + "/repos/" + params.owner + "/" + params.repo + "/contents" + params.resource;
+        const url = github.config.endpoint + "/repos/" + params.owner + "/" + params.repo + "/contents/" + params.resource;
         const a = data=>{
             resolve(data);
         }
@@ -166,6 +166,47 @@ window.github.repos.contents = async(params,settings)=>{
             };
         }
         console.log(94, 'github.repos.contents', {
+            url,
+            settings
+        });
+        request(url, settings).then(a).catch(b);
+    }
+    );
+}
+
+window.github.user = {};
+window.github.user.repos = (params,settings)=>{
+    settings ? null : settings = {};
+    return new Promise(function(resolve, reject) {
+        const url = github.config.endpoint + "/user/repos";
+        const a = data=>{
+            resolve(data);
+        }
+        const b = (error)=>{
+            console.log(error);
+            reject(error);
+        }
+        const accessToken = localStorage.githubAccessToken;
+        accessToken ? settings.headers = {
+            Accept: "application/vnd.github+json",
+            Authorization: "token " + accessToken
+        } : null;
+        if (settings) {
+            if (settings.headers) {
+                settings.headers['If-None-Match'] = "";
+            } else {
+                settings.headers = {
+                    'If-None-Match': ''
+                };
+            }
+        } else {
+            settings = {
+                headers: {
+                    'If-None-Match': ''
+                }
+            };
+        }
+        console.log(209, 'github.user.repos', {
             url,
             settings
         });
