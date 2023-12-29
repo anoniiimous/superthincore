@@ -106,11 +106,6 @@ window.APP.route.r = () => {
 
 window.APP.view = {}
 window.APP.view.room = (params) => {
-    console.log("TinyScript::APP.VIEW.ROOM", params);
-    clearInterval(APP.ScriptLoading);
-    APP.ScriptInit = true;
-    console.log("TinyScript::APP.VIEW.ROOM", params);
-
     //ELEMENTS
     var obj = {}
     obj.body = document.body;
@@ -420,6 +415,8 @@ window.MVC = {
         var twa = document.querySelector("tinychat-webrtc-app");
         if (twa) {
             if (twa.shadowRoot) {
+                clearInterval(APP.ScriptLoading);
+                APP.ScriptInit = true;
                 APP.view.room()
             }
         }
@@ -514,7 +511,7 @@ window.MVC = {
                                 contents
                             }) : null;
                         } catch(e) {
-                            console.log(e);
+                            console.log(517, 'Welcome to ' + path, e);
                             //alert("Welcome to " + path);
                         }
                     }
