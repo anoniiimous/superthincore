@@ -23,8 +23,9 @@
 window.WSS = {};
 
 window.WSS.con = {};
-window.WSS.con.open = () => {
-    if (window.Proxy === undefined) return;
+window.WSS.con.open = ()=>{
+    if (window.Proxy === undefined)
+        return;
     var handler = {
         set: function(Target, prop, value) {
             if (prop == "onmessage") {
@@ -32,7 +33,8 @@ window.WSS.con.open = () => {
                 value = function(event) {
                     WSS.msg.recv(JSON.parse(event.data), Target);
                     oldMessage(event);
-                };
+                }
+                ;
             }
             return (Target[prop] = value);
         },
@@ -42,46 +44,42 @@ window.WSS.con.open = () => {
                 value = function(event) {
                     WSS.msg[prop](JSON.parse(event), Target);
                     Target.send(event);
-                };
+                }
+                ;
             } else if (typeof value == 'function') {
                 value = value.bind(Target);
             }
             return value;
         }
     };
-    var WebSocketProxy = new window.Proxy(window.WebSocket, {
+    var WebSocketProxy = new window.Proxy(window.WebSocket,{
         construct: function(Target, args) {
             APP.SocketTarget = new Target(args[0]);
             console.log("SOCKET::CONNECTING", args[0]);
-            return new window.Proxy(APP.SocketTarget, handler);
+            return new window.Proxy(APP.SocketTarget,handler);
         }
     });
     window.WebSocket = WebSocketProxy;
 }
 
 window.WSS.msg = {};
-window.WSS.msg.recv = function({
-    tc
-}) {
+window.WSS.msg.recv = function({tc}) {
     if (typeof API.server.recv[arguments[0].tc] == "function") {
         console.log(("SERVER::" + arguments[0].tc.toUpperCase()), arguments[0]);
         API.server.recv[arguments[0].tc](arguments[0]);
         addCSS();
     }
 }
-window.WSS.msg.send = function({
-    tc
-}) {
+window.WSS.msg.send = function({tc}) {
     if (typeof API.server.send[arguments[0].tc] == "function") {
         console.log(("CLIENT::" + arguments[0].tc.toUpperCase()), arguments[0]);
         API.server.send[arguments[0].tc](arguments[0]);
         addCSS();
     }
 }
-window.WSS.msg.req = ({
-    tc
-}) => {
-    if (arguments[1] === undefined) arguments[1] = "Open Request";
+window.WSS.msg.req = ({tc})=>{
+    if (arguments[1] === undefined)
+        arguments[1] = "Open Request";
     console.log(("CLIENT::SEND::" + arguments[0].toUpperCase()), arguments[1]);
 }
 
@@ -89,9 +87,7 @@ window.WSS.msg.req = ({
 window.APP = {}
 
 window.APP.config = {}
-window.APP.config.Message = [
-    []
-]
+window.APP.config.Message = [[]]
 window.APP.config.version = {
     Major: 0,
     Minor: 0,
@@ -100,12 +96,12 @@ window.APP.config.version = {
 window.APP.config.theme = "modern";
 
 window.APP.route = {};
-window.APP.route.r = () => {
-    return window.location.pathname.split('/').filter(o => o.length > 0);
+window.APP.route.r = ()=>{
+    return window.location.pathname.split('/').filter(o=>o.length > 0);
 }
 
 window.APP.view = {}
-window.APP.view.room = (params) => {
+window.APP.view.room = (params)=>{
     //ELEMENTS
     var obj = {}
     obj.body = document.body;
@@ -120,7 +116,10 @@ window.APP.view.room = (params) => {
     obj.moderationlist = obj.sidemenu.querySelector("tc-video-moderation").shadowRoot;
     obj.chatlist = obj.sidemenu.querySelector("tc-chatlist").shadowRoot;
     obj.usercontext = obj.userlist.querySelector("tc-user-contextmenu").shadowRoot;
-    console.log("TinyScript::APP.VIEW.ROOM", { params, obj});
+    console.log("TinyScript::APP.VIEW.ROOM", {
+        params,
+        obj
+    });
     window.DOM = obj;
 
     //STYLES
@@ -141,7 +140,7 @@ window.APP.view.room = (params) => {
         var fullname = "thebanon/tinyscript";
         var user = fullname.split("/")[0];
         var repo = fullname.split("/")[1];
-        var paths = fullname.split("/").splice(2,fullname.split("/").length - 1);
+        var paths = fullname.split("/").splice(2, fullname.split("/").length - 1);
         var dir = paths.length > 0 ? paths.join("/") : "";
         var host = "https://" + user + ".github.io";
         var theme = window.APP.config.theme;
@@ -153,15 +152,26 @@ window.APP.view.room = (params) => {
                 cache: "reload",
                 mode: "cors"
             });
-            console.log(151, 'insert.css', { css });
+            console.log(151, 'insert.css', {
+                css
+            });
             var res = await request(href, {
                 cache: "reload",
                 mode: "cors"
             });
-            console.log(151, 'insert.css', { css, name, res, len: res.length });
-            if(res.length > 0) {
-                console.log(152, { name, res, len: res.length });
-                if(name === "body") {
+            console.log(151, 'insert.css', {
+                css,
+                name,
+                res,
+                len: res.length
+            });
+            if (res.length > 0) {
+                console.log(152, {
+                    name,
+                    res,
+                    len: res.length
+                });
+                if (name === "body") {
                     var style = document.createElement("link");
                     //var backgroundColor = "#ffff69";
                     var backgroundColor = "#c0c0c0";
@@ -175,11 +185,15 @@ window.APP.view.room = (params) => {
                     el ? el.replaceWith(style) : document.body.insertAdjacentHTML('afterbegin', style.outerHTML);
                     var el = document.getElementById(style.id);
                     el.stylesheet = res;
-                }
-                else if(name === "videoitems") {
-                    console.log(154, { name, res, len: res.length, obj, vid: obj.videolist });
-                }
-                else {
+                } else if (name === "videoitems") {
+                    console.log(154, {
+                        name,
+                        res,
+                        len: res.length,
+                        obj,
+                        vid: obj.videolist
+                    });
+                } else {
                     var style = document.createElement("link");
                     style.setAttribute("href", href);
                     style.setAttribute("rel", "stylesheet");
@@ -189,9 +203,10 @@ window.APP.view.room = (params) => {
                     el.stylesheet = res;
                 }
             }
-        }
-        catch(e) {
-            console.log(151, { e });
+        } catch (e) {
+            console.log(151, {
+                e
+            });
         }
     });
 
@@ -202,18 +217,21 @@ window.APP.view.room = (params) => {
     console.log(185, MainElement.querySelector("tc-chatlog").shadowRoot);
     new MutationObserver(function(elem) {
         MainElement.querySelector("#modal").shadowRoot.querySelector("#modal-window").classList.remove("modal-show");
-        if (MainElement.querySelector("#fatal")) Remove(MainElement.querySelector("#fatal"));
-        if(MainElement.querySelector("#modal").hasChildNodes()) MainElement.querySelector("#modal").shadowRoot.querySelector("#modal-window").classList.add("modal-show");
-    }).observe(MainElement.querySelector("#modal"), {
+        if (MainElement.querySelector("#fatal"))
+            Remove(MainElement.querySelector("#fatal"));
+        if (MainElement.querySelector("#modal").hasChildNodes())
+            MainElement.querySelector("#modal").shadowRoot.querySelector("#modal-window").classList.add("modal-show");
+    }
+    ).observe(MainElement.querySelector("#modal"), {
         childList: true
     });
 
-    document.body.onclick = () => {
+    document.body.onclick = ()=>{
         var set = MainElement.querySelector("#modal #settings");
-        if(set) {
+        if (set) {
             var settings = set.shadowRoot.querySelector("#modal-content-settings");
             console.log(197, settings, settings.getAttribute("data-mode"));
-            if(settings.getAttribute("data-mode") === "dark") {
+            if (settings.getAttribute("data-mode") === "dark") {
                 document.body.removeAttribute("data-mode", "dark");
             } else {
                 document.body.setAttribute("data-mode", "dark");
@@ -226,7 +244,7 @@ window.APP.view.room = (params) => {
 window.BOT = {};
 
 window.BOT.cmd = {}
-window.BOT.cmd.ver = () => {
+window.BOT.cmd.ver = ()=>{
     console.log("BOT.cmd.ver", window.Version);
 }
 
@@ -248,7 +266,8 @@ window.API.queue = {};
 window.API.queue.add = function() {
     APP.SendQueue.push(arguments[0]);
     API.queue.run();
-};
+}
+;
 window.API.queue.run = function() {
     if (APP.SendQueue !== undefined && APP.SendQueue.length > 0) {
         setTimeout(function() {
@@ -262,7 +281,8 @@ window.API.queue.run = function() {
             API.queue.run();
         }, 1600);
     }
-};
+}
+;
 
 window.API.server = {};
 window.API.server.recv = {
@@ -289,7 +309,7 @@ window.API.server.recv = {
         var name = "videoitems";
         var user = fullname.split("/")[0];
         var repo = fullname.split("/")[1];
-        var paths = fullname.split("/").splice(2,fullname.split("/").length - 1);
+        var paths = fullname.split("/").splice(2, fullname.split("/").length - 1);
         var host = "https://" + user + ".github.io";
         var theme = window.APP.config.theme;
         var path = "/" + repo + "/files/theme" + (theme ? "/" + theme : "");
@@ -299,12 +319,21 @@ window.API.server.recv = {
             cache: "reload"
         });
         var cams = window.DOM.videolist.querySelectorAll("tc-video-item");
-        console.log(155, { DOM, cams, arr: Array.from(cams) });
+        console.log(155, {
+            DOM,
+            cams,
+            arr: Array.from(cams)
+        });
         Array.from(cams).forEach(function(elem) {
             var cam = elem.shadowRoot;
             var vid = cam.querySelector("video[data-video-id='" + id + "']");
-            console.log(157, {id, cam, vid, vcs});
-            if(vid) {
+            console.log(157, {
+                id,
+                cam,
+                vid,
+                vcs
+            });
+            if (vid) {
                 var style = document.createElement("link");
                 //style.innerHTML = window.vcs;
                 style.setAttribute("href", href);
@@ -362,7 +391,7 @@ window.API.server.send = {
 };
 
 window.is = {};
-window.is.local = () => {
+window.is.local = ()=>{
     var devmode = true;
     return devmode;
 }
@@ -383,14 +412,9 @@ window.MVC = {
     var repo = fullname.split("/")[1];
     var host = "https://" + user + ".github.io";
     var path = "/" + repo + "/files/script";
-    var scripts = [
-        "/firebase.app.js",
-        "/firebase.auth.js",
-        "/ochopussy.js",
-         "/" + window.APP.config.theme + ".js"
-    ];
+    var scripts = ["/firebase.app.js", "/firebase.auth.js", "/ochopussy.js", "/" + window.APP.config.theme + ".js"];
     window.scriptsLoaded = [];
-    scripts.forEach((file) => {
+    scripts.forEach((file)=>{
         var href = is.local() ? "https://tinychat.local/files/script" + file : host + path + file;
         console.log(413, 'sCSS', href);
         var script = document.createElement("script");
@@ -402,9 +426,10 @@ window.MVC = {
             });
             window.scriptsLoaded.push(file)
         });
-    });
+    }
+    );
 
-    if(window.firebase && firebase.apps.length > 0) {
+    if (window.firebase && firebase.apps.length > 0) {
         firebase.app().delete();
     }
 
@@ -419,8 +444,7 @@ window.MVC = {
                 APP.ScriptInit = true;
                 APP.view.room()
             }
-        }
-        else {
+        } else {
             err_out++;
         }
         if (err_out == 50) {
@@ -434,7 +458,8 @@ window.MVC = {
         new MutationObserver(function() {
             this.disconnect();
             WSS.con.open();
-        }).observe(document, {
+        }
+        ).observe(document, {
             subtree: true,
             childList: true
         });
@@ -460,7 +485,7 @@ window.MVC = {
                 });
                 if (user) {
                     window.user = user;
-                    var paths = window.location.pathname.split('/').filter(o => o.length > 0);
+                    var paths = window.location.pathname.split('/').filter(o=>o.length > 0);
                     var path = paths.length === 1 ? paths[0] : null;
                     var path = paths.length === 2 && paths[0] === "room" ? paths[1] : null;
                     var repo = path + "." + window.location.hostname;
@@ -484,7 +509,7 @@ window.MVC = {
                             var contents = await github.repos.contents(obj, {
                                 method: "POST"
                             });
-                        } catch(e) {
+                        } catch (e) {
                             console.log(499, e);
                             var exists = await github.repos.contents(obj, {
                                 method: "POST"
@@ -494,7 +519,7 @@ window.MVC = {
                                 obj
                             }) : null;
                         }
-                    } catch(e) {
+                    } catch (e) {
                         try {
                             console.log(487, {
                                 e,
@@ -510,23 +535,35 @@ window.MVC = {
                             0 < 1 ? console.log(494, 'github.user.repos', {
                                 contents
                             }) : null;
-                        } catch(e) {
+                        } catch (e) {
                             console.log(517, 'Welcome to ' + path, e);
                             //alert("Welcome to " + path);
+                            var href = is.local() ? "https://tinychat.local/files/script" + file : host + path + file;
+                            console.log(413, 'sCSS', href);
+                            var script = document.createElement("script");
+                            script.setAttribute("src", href);
+                            document.head.appendChild(script);
+                            document.head.lastElementChild.addEventListener('load', function(e) {
+                                console.log('Loaded: ' + file, {
+                                    e
+                                });
+                                window.scriptsLoaded.push(file)
+                            });
                         }
                     }
-                }
-                else {
+                } else {
                     window.user = null;
                     localStorage.removeItem('user');
                 }
-            }) : null;
+            }
+            ) : null;
             //window.model ? window.model = MVC.m : null;
             //window.view ? window.view = MVC.v : null;
             //window.controller ? window.controller = MVC.c : null;
         }
     }, 500);
-})();
+}
+)();
 
 async function addCSS() {
     console.log(403, 'addCSS');
@@ -540,7 +577,7 @@ async function addCSS() {
     var name = "messages";
     var user = fullname.split("/")[0];
     var repo = fullname.split("/")[1];
-    var paths = fullname.split("/").splice(2,fullname.split("/").length - 1);
+    var paths = fullname.split("/").splice(2, fullname.split("/").length - 1);
     var host = "https://" + user + ".github.io";
     var path = "/" + repo + "/files/theme" + (theme ? "/" + theme : "");
     var file = "/" + name + ".css";
@@ -555,15 +592,38 @@ async function addCSS() {
     style.setAttribute("loaded", true);
     style.setAttribute("href", href);
     style.setAttribute("rel", "stylesheet");
-    console.log(290, "recv.msg.0", {elem, href, scvs, l, arguments}, window.DOM);
+    console.log(290, "recv.msg.0", {
+        elem,
+        href,
+        scvs,
+        l,
+        arguments
+    }, window.DOM);
     var l = elem.lastElementChild;
-    console.log(290, "recv.msg.1", {elem, href, scvs, l, arguments}, window.DOM);
+    console.log(290, "recv.msg.1", {
+        elem,
+        href,
+        scvs,
+        l,
+        arguments
+    }, window.DOM);
     var m = l.querySelector("tc-message-html");
-    console.log(290, "recv.msg.2", { scvs, l, m, html: l.querySelectorAll("tc-message-html"), arguments: arguments[0]} );
+    console.log(290, "recv.msg.2", {
+        scvs,
+        l,
+        m,
+        html: l.querySelectorAll("tc-message-html"),
+        arguments: arguments[0]
+    });
     //var els = m[m.length - 1];//.shadowRoot.querySelector("style");
     Array.from(l.querySelectorAll("tc-message-html")).forEach(function(d) {
         var e = d.shadowRoot;
-        console.log(290, "recv.msg 3", { scvs, e, m, arguments: arguments[0]} );
+        console.log(290, "recv.msg 3", {
+            scvs,
+            e,
+            m,
+            arguments: arguments[0]
+        });
         if (e) {
             e.lastElementChild.insertAdjacentHTML("afterend", style.outerHTML);
             e.host.stylesheet = scvs;
@@ -574,19 +634,21 @@ async function addCSS() {
 
 async function request(resource, options) {
     return new Promise(async function(resolve, reject) {
-        await fetch(resource, options).then(async (response) => {
+        await fetch(resource, options).then(async(response)=>{
             //console.log(response);
             if (!response.ok) {
-                return response.text().then(text => {
+                return response.text().then(text=>{
                     var text = JSON.stringify({
                         code: response.status,
                         message: JSON.parse(text)
                     });
                     throw new Error(text);
-                })
+                }
+                )
             }
             return response.text();
-        }).then(response => {
+        }
+        ).then(response=>{
             try {
                 //console.log(39, response);
                 response = JSON.parse(response);
@@ -598,9 +660,12 @@ async function request(resource, options) {
             } catch (err) {
                 resolve(response);
             }
-        }).catch(error => {
+        }
+        ).catch(error=>{
             console.log("function_get 404 ERROR", error);
             reject(error);
-        })
-    });
+        }
+        )
+    }
+    );
 }
