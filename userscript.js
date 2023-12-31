@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        TinyScript
-// @version     0.23.0
+// @version     0.23.5
 // @description A TinyChat Launcher improving moderation, enabling bots, and sharing themes in a compact userscript.
 // @author      thebanon
 // @license     Copyright (C) thebanon
@@ -267,7 +267,7 @@ window.API.queue.add = function() {
     APP.SendQueue.push(arguments[0]);
     API.queue.run();
 }
-;
+
 window.API.queue.run = function() {
     if (APP.SendQueue !== undefined && APP.SendQueue.length > 0) {
         setTimeout(function() {
@@ -282,7 +282,6 @@ window.API.queue.run = function() {
         }, 1600);
     }
 }
-;
 
 window.API.server = {};
 window.API.server.recv = {
@@ -488,37 +487,23 @@ window.MVC = {
                     var paths = window.location.pathname.split('/').filter(o=>o.length > 0);
                     var path = paths.length === 1 ? paths[0] : null;
                     var path = paths.length === 2 && paths[0] === "room" ? paths[1] : null;
-                    var repo = path + "." + window.location.hostname;
+                    var repo = path;
+                    var repository = "tinychat.local";
                     var obj = {
                         owner: localStorage.user,
-                        repo: repo,
-                        resource: "config.json"
+                        repo: repository,
+                        resource: path + "/config.json"
                     };
                     0 < 1 ? console.log(466, 'index.user', {
                         obj,
-                        user,
                         paths,
                         repo
                     }) : null;
                     try {
-                        try {
-                            0 < 1 ? console.log(499, 'github.repos.contents', {
-                                obj,
-                                user
-                            }) : null;
-                            var contents = await github.repos.contents(obj, {
-                                method: "POST"
-                            });
-                        } catch (e) {
-                            console.log(499, e);
-                            var exists = await github.repos.contents(obj, {
-                                method: "POST"
-                            });
-                            0 < 1 ? console.log(486, 'github.repos.contents', {
-                                exists,
-                                obj
-                            }) : null;
-                        }
+                        var contents = await github.repos.contents(obj);
+                        0 < 1 ? console.log(499, 'github.repos.contents', {
+                            contents
+                        }) : null;
                     } catch (e) {
                         try {
                             console.log(487, {
@@ -527,7 +512,7 @@ window.MVC = {
                             });
                             var contents = await github.user.repos(null, {
                                 body: JSON.stringify({
-                                    name: repo,
+                                    name: repository,
                                     private: true
                                 }),
                                 method: "POST"
@@ -541,7 +526,7 @@ window.MVC = {
                             var user = fullname.split("/")[0];
                             var repo = fullname.split("/")[1];
                             var host = "https://" + user + ".github.io";
-                            var path = "/" + repo + "/files/script";
+                            var path = "/" + repository + "/files/script";
                             var file = "resolve.js";
                             console.log(517, 'Welcome to ' + path, e);
                             var href = is.local() ? "https://tinychat.local/files/script/" + file : host + path + file;
@@ -552,14 +537,47 @@ window.MVC = {
                                 script.setAttribute("src", href);
                                 document.head.appendChild(script);
                                 //script = document.lastElementChild;
+
+                                alert(542);
+
                                 script.addEventListener('load', function(e) {
                                     console.log('Loaded: ' + file, {
                                         e
                                     });
                                     console.log(558, "Welcome to " + path);
                                 })
+
+                                alert(551);
+
                             } else {
                                 console.log(561, "Welcome to " + (paths[1] ? paths[1] : paths[0]));
+
+                                var script = document.createElement("script");
+                                script.setAttribute("src", href);
+                                //document.head.appendChild(script);
+                                script = document.lastElementChild;
+
+                                try {
+                                    var obj = {
+                                        owner: localStorage.user,
+                                        repo: "tinyscript.local",
+                                        resource: repo + "/config.json"
+                                    };
+                                    var data = {
+                                        "content": {
+                                            "devMode": "true"
+                                        },
+                                        "message": "Create Configuration File"
+                                    }
+                                    //alert(data.message);
+                                    var contents = await github.repos.contents(obj, {
+                                        body: atob(JSON.stringify(data, null, 4)),
+                                        method: "POST"
+                                    });
+                                    alert("Configuration File Created");
+                                } catch(e) {
+                                    console.log(565, e);
+                                }
                             }
                         }
                     }
