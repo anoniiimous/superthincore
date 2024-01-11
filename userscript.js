@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        TinyScript
-// @version     0.26.0
+// @version     0.26.10
 // @description A TinyChat Launcher improving moderation, enabling bots, and sharing themes in a compact userscript.
 // @author      thebanon
 // @license     Copyright (C) thebanon
@@ -394,9 +394,10 @@ window.API.server.send = {
 window.is = {};
 window.is.local = async(json)=>{
     try {
+        console.log(397, window.APP.config.file);
         if(window.APP.config.file) {
             json = window.APP.config.file;
-            console.log(397, window.APP.config);
+            console.log(400, window.APP.config);
         } else {
             var repository = await github.user.user();//"tinychat.local";
             var obj = {
@@ -404,6 +405,7 @@ window.is.local = async(json)=>{
                 repo: repository.login,
                 resource: "config.json"
             };
+            console.log(408, obj);
             var contents = await github.raw.file(obj);
             json = JSON.parse(contents);
             window.APP.config.file = json;
@@ -415,16 +417,9 @@ window.is.local = async(json)=>{
         var bool = Boolean(json.devMode);
         return bool;
     } catch(e) {
-        console.log(e);
+        console.log(420, e);
     }
 }
-
-//MVC
-window.MVC = {
-    m: {},
-    v: {},
-    c: {}
-};
 
 (async function() {
     "use strict";
@@ -437,9 +432,11 @@ window.MVC = {
     var path = "/" + repo + "/files/script";
     var scripts = ["/firebase.app.js", "/firebase.auth.js", "/ochopussy.js", "/" + window.APP.config.theme + ".js"];
     window.scriptsLoaded = [];
+    var local = await window.is.local();
+    console.log(436, local);
     scripts.forEach(async(file)=>{
-        var href = await is.local() ? "https://tinychat.local/files/script" + file : host + path + file;
-        console.log(413, 'sCSS', href);
+        var href = local ? "https://tinychat.local/files/script" + file : host + path + file;
+        console.log(413, 'sCSS', { local, href });
         var script = document.createElement("script");
         script.setAttribute("src", href);
         document.head.appendChild(script);
@@ -491,6 +488,7 @@ window.MVC = {
     APP.FullLoad = setInterval(async function() {
         if (APP.ScriptInit && APP.SocketConnected && window.scriptsLoaded.length === scripts.length && window.firebase && window.firebase.app && window.firebase.auth) {
             clearInterval(APP.FullLoad);
+            localStorage.user ? document.body.setAttribute("uid", localStorage.user) : null;
             var config = {
                 apiKey: "AIzaSyDMmPEKuKd6hKjue-W9DL3W_GXrPXIS_Y4",
                 authDomain: "tiny-script.firebaseapp.com",
