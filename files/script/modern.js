@@ -48,8 +48,17 @@ modal.zIndex = elem=>elem.forEach((v,k)=>{
 
 window.controller = {};
 window.controller.config = {};
-window.controller.config.open = ()=>{
-    console.log(15, 'mvc.c.config');
+window.controller.config.open = async()=>{
+	var local = await window.is.local();
+    console.log(15, 'mvc.c.config', local);
+    var href = local ? "https://tinychat.local/files/html/" + : "https://" + localStorage.user + ".github.io/files/html" + file;
+	console.log(55, {
+		href
+	});
+	var h = await request(href);
+	console.log(55, {
+		h
+	});
     var h = `
 	<blocks auth="false">
 		<block modal="modal-config">

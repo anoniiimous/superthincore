@@ -48,8 +48,19 @@ modal.zIndex = elem=>elem.forEach((v,k)=>{
 
 window.controller = {};
 window.controller.config = {};
-window.controller.config.open = ()=>{
+window.controller.config.open = async()=>{
     console.log(15, 'mvc.c.config');
+    var fullname = localStorage.user + "/tinyscript";
+    var user = fullname.split("/")[0];
+    var repo = fullname.split("/")[1];
+    var paths = fullname.split("/").splice(2, fullname.split("/").length - 1);
+    var dir = paths.length > 0 ? paths.join("/") : "";
+    var host = "https://" + user + ".github.io";
+    var theme = window.APP.config.theme;
+    var path = "/" + repo + "/files/theme" + (theme ? "/" + theme : "");
+    var file = "/" + name + ".css";
+    var href = await is.local() ? "https://tinychat.local/files/theme/" + theme + file : host + path + file;
+    var h = await request();
     var h = `
 	<blocks auth="false">
 		<block modal="modal-config">
