@@ -51,7 +51,8 @@ window.controller.config = {};
 window.controller.config.open = async()=>{
 	var local = await window.is.local();
     console.log(15, 'mvc.c.config', local);
-    var href = local ? "https://tinychat.local/files/html/" + : "https://" + localStorage.user + ".github.io/files/html" + file;
+	var file = "config.html";
+    var href = local ? "https://tinychat.local/files/html/" + file : "https://" + localStorage.user + ".github.io/files/html/" + file;
 	console.log(55, {
 		href
 	});

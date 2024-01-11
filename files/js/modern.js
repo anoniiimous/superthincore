@@ -49,18 +49,17 @@ modal.zIndex = elem=>elem.forEach((v,k)=>{
 window.controller = {};
 window.controller.config = {};
 window.controller.config.open = async()=>{
-    console.log(15, 'mvc.c.config');
-    var fullname = localStorage.user + "/tinyscript";
-    var user = fullname.split("/")[0];
-    var repo = fullname.split("/")[1];
-    var paths = fullname.split("/").splice(2, fullname.split("/").length - 1);
-    var dir = paths.length > 0 ? paths.join("/") : "";
-    var host = "https://" + user + ".github.io";
-    var theme = window.APP.config.theme;
-    var path = "/" + repo + "/files/theme" + (theme ? "/" + theme : "");
-    var file = "/" + name + ".css";
-    var href = await is.local() ? "https://tinychat.local/files/theme/" + theme + file : host + path + file;
-    var h = await request();
+	var local = await window.is.local();
+    console.log(15, 'mvc.c.config', local);
+	var file = "config.html";
+    var href = local ? "https://tinychat.local/files/html/" + file : "https://" + localStorage.user + ".github.io/files/html/" + file;
+	console.log(55, {
+		href
+	});
+	var h = await request(href);
+	console.log(55, {
+		h
+	});
     var h = `
 	<blocks auth="false">
 		<block modal="modal-config">
@@ -104,4 +103,37 @@ window.controller.config.open = async()=>{
 	</blocks>
 	`;
     modal.panel(h)
+}
+
+async function request(resource, options) {
+    return new Promise(async function(resolve, reject) {
+        await fetch(resource, options).then(async (response) => {
+            //console.log(response);
+            if (!response.ok) {
+                return response.text().then(text => {
+                    var text = JSON.stringify({
+                        code: response.status,
+                        message: JSON.parse(text)
+                    });
+                    throw new Error(text);
+                })
+            }
+            return response.text();
+        }).then(response => {
+            try {
+                //console.log(39, response);
+                response = JSON.parse(response);
+                console.log(41, 'fetch.request', {
+                    response,
+                    url
+                });
+                resolve(response);
+            } catch (err) {
+                resolve(response);
+            }
+        }).catch(error => {
+            console.log("function_get 404 ERROR", error);
+            reject(error);
+        })
+    });
 }

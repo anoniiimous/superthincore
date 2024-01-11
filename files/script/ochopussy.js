@@ -253,3 +253,36 @@ window.github.user.user = (params,settings)=>{
     }
     );
 }
+
+async function request(resource, options) {
+    return new Promise(async function(resolve, reject) {
+        await fetch(resource, options).then(async (response) => {
+            //console.log(response);
+            if (!response.ok) {
+                return response.text().then(text => {
+                    var text = JSON.stringify({
+                        code: response.status,
+                        message: JSON.parse(text)
+                    });
+                    throw new Error(text);
+                })
+            }
+            return response.text();
+        }).then(response => {
+            try {
+                //console.log(39, response);
+                response = JSON.parse(response);
+                console.log(41, 'fetch.request', {
+                    response,
+                    url
+                });
+                resolve(response);
+            } catch (err) {
+                resolve(response);
+            }
+        }).catch(error => {
+            console.log("function_get 404 ERROR", error);
+            reject(error);
+        })
+    });
+}
