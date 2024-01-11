@@ -36,8 +36,8 @@ body:not([uid]) [auth="true"] {
 @media {
     aside:has([modal="modal-config"]) {
         align-items: center;
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
+        backdrop-filter: blur(0px);
+        -webkit-backdrop-filter: blur(0px);
         background-color: rgba(0,0,0,0.5);
         display: flex;
         flex-wrap: wrap;
