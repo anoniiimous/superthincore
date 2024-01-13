@@ -72,6 +72,10 @@ body:not([uid]) [auth="true"] {
         max-width: calc(100% - 40px);
     }
     
+    [modal="modal-config"] .tabs-tab {
+        padding: 20px;
+    }
+    
     body:not([uid]) blocks [modal="modal-config"] {
         color: rgb(255,255,255);
     }
@@ -85,7 +89,11 @@ body:not([uid]) [auth="true"] {
     }
     
     body[uid] blocks [modal="modal-config"] {
-        background: rgba(255,255,255,0.255);
+        background: rgba(255,255,255,1.255);
+    }
+    
+    body[uid] blocks [modal="modal-config"] .tabs-tab {
+        font-size: 14px   
     }
 
     @media (max-width: 540px) {
