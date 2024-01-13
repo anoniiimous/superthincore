@@ -16,6 +16,10 @@ body > aside::-webkit-scrollbar {
     width: 0px;
 }
 
+block, card, box {
+    display: flex;
+}
+
 column, flex, row, section {
     display: flex;
     /* flex: 1; */
@@ -72,8 +76,13 @@ body:not([uid]) [auth="true"] {
         max-width: calc(100% - 40px);
     }
     
+    [modal="modal-config"] > header {
+        height: 50px;
+        width: 100%;
+    }
+    
     [modal="modal-config"] .tabs-tab {
-        padding: 20px;
+        padding: 0 20px;
     }
     
     body:not([uid]) blocks [modal="modal-config"] {
@@ -92,8 +101,13 @@ body:not([uid]) [auth="true"] {
         background: rgba(255,255,255,1.255);
     }
     
-    body[uid] blocks [modal="modal-config"] .tabs-tab {
-        font-size: 14px   
+    body[uid] blocks [modal="modal-config"] header .config-tabs {
+        border-bottom: 1px solid #eee;
+    }
+    
+    body[uid] blocks [modal="modal-config"] header .config-tabs .tabs-tab {
+        font-size: 14px;
+        line-height: 50px;
     }
 
     @media (max-width: 540px) {
